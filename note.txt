@@ -1,0 +1,18 @@
+Panduan untuk tim
+
+- Clone dulu repository projectsnya
+
+Setelah clone, ubah file .env.example menjadi .env
+lalu ubah konfigurasi di bagian:
+1. DB_CONNECTION=sqlite
+2. DB_DATABASE=tukangCoretz.sqlite
+
+untuk konfigurasi lain sesuaikan saja, yang penting 2 diatas untuk membuat database sqlite
+
+setelah itu
+1. Masuk ke terminal bisa ctrl + `
+2. ketik perintah "php artisan migrate" untuk membuat migrasi database
+3. ketik perintah "php artisan migrate:refresh" untuk mereset migrasi dan membuat ulang (jika perlu)
+4. ketik perintah "php artisan db:seed" untuk membuat seeder database
+
+ingat semua perintah php artisan diatas dicopy tanpa tanda kutip.
