@@ -3,5 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $title = 'Tukang Coretz | Home';
+    return view('index' , compact('title'))->name('home');
 });
+
+
