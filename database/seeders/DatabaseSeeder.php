@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'password' => 'admin123',
+            'role' => 'admin',
         ]);
     }
 }
