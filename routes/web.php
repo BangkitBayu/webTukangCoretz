@@ -1,22 +1,20 @@
 <?php
 
-use App\Http\Controllers\admin\adminController;
-use App\Http\Controllers\auth\logoutController;
-use App\Http\Controllers\projectManagement\ProjectController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $title = 'Tukang Coretz';
-    return view('index', compact('title'));
+    return view('welcome');
 });
 
-Route::get('/login', function () {
-    $title = 'Tukang Coretz | Login';
-    return view('auth.login', compact('title'));
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['admin'])->group(function () {
-    Route::post('/logout', logoutController::class);
-    Route::resource('/admin', AdminController::class);
-    Route::resource('/admin/projects', ProjectController::class);
-});
+require __DIR__.'/auth.php';
