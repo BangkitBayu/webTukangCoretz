@@ -33,7 +33,6 @@ class ProjectController extends Controller
     public function store(storeProjectRequest $request)
     {
         $request->validated();
-
         $slug = strtolower(str_replace(' ', '-', $request->only('name')));
         try {
             Project::create([

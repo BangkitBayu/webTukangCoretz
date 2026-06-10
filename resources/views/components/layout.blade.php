@@ -10,12 +10,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="/resources/css/app.css">
-    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('images/logo.webp') }}" type="image/x-icon">
     <title>{{ $title ?? 'Default Title' }}</title>
 </head>
 
 <body>
-    <header></header>
+    <header>
+
+    </header>
     <main>
         {{ $slot }}
     </main>

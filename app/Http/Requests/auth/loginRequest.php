@@ -33,6 +33,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
+
     /**
      * Attempt to authenticate the request's credentials.
      *
@@ -46,7 +47,9 @@ class LoginRequest extends FormRequest
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => trans('auth.failed'),
+                // 'email' => trans('auth.failed'),
+                'email' => 'Email or password is incorrect',
+                'password' => 'Email or password is incorrect'
             ]);
         }
 
