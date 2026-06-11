@@ -1,3 +1,3 @@
-<x-layout>
-    <x-slot:title>{{ $title }}</x-slot:title>
-</x-layout>
+<x-app-layout>
+    {{-- <x-slot:title>{{ $title }}</x-slot:title> --}}
+</x-app-layout>

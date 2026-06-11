@@ -11,7 +11,8 @@ class TestimonialController extends Controller
      */
     public function index()
     {
-        return view('testimonial');
+        $pageName = "Testimonial";
+        return view('testimonial', compact('pageName'));
     }
 
     /**
