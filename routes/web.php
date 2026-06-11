@@ -1,21 +1,32 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProjectController as ControllersProjectController;
+use App\Http\Controllers\projectManagement\ProjectController;
+use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     $title = "Tukang Coretz";
-    return view('index' , compact("title"));
-});
+    return view('index', compact("title"));
+})->name('index');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $pageName = "Dashboard";
+    return view('dashboard' , compact('pageName'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // Route profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Route projects
+    Route::get('/projects' , [ProjectController::class, 'index'])->name('projects.index');
+
+    // Route testimonial
+    Route::get('/testimonial' , [TestimonialController::class , 'index'])->name('testimonial.index');
 });
 
 require __DIR__ . '/auth.php';
