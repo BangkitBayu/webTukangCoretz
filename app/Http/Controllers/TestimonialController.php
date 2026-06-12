@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\testimonial\storeTestimonialRequest;
+use App\Models\Testimonial;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
@@ -26,9 +29,12 @@ class TestimonialController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(storeTestimonialRequest $request): RedirectResponse
     {
-        //
+        $request->validated();
+    
+        Testimonial::create($request->all());
+        return back()->with('success', 'New data has been successfully saved');
     }
 
     /**

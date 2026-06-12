@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
 
-            $table->string('fullname', 255);
+            $table->string('name', 255);
             $table->string('position', 255);
             $table->text('comment');
             $table->integer('rating')->unsigned()->default(0);
-
+            $table->enum('isShow', [0, 1])->default(0);
 
             $table->timestamps();
         });

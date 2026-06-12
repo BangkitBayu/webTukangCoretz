@@ -11,6 +11,6 @@ class Testimonial extends Model
         'position',
         'comment',
         'rating',
+        'isShow'
     ];
-
 }
