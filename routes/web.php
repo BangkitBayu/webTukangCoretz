@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function () {
 
     // Route testimonial
     Route::get('/testimonial' , [TestimonialController::class , 'index'])->name('testimonial.index');
+    Route::post('/testimonial' , [TestimonialController::class , 'store'])->name('testimonial.store');
+    Route::put('/testimonial' , [TestimonialController::class , 'edit'])->name('testimonial.edit');
 });
 
 require __DIR__ . '/auth.php';
