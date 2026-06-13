@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\testimonial\storeTestimonialRequest;
+use App\Http\Requests\testimonial\updateTestimonialRequest;
 use App\Models\Testimonial;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,8 @@ class TestimonialController extends Controller
     public function index()
     {
         $pageName = "Testimonial";
-        return view('testimonial', compact('pageName'));
+        $testimonials = Testimonial::all();
+        return view('testimonial', compact('pageName', 'testimonials'));
     }
 
     /**
@@ -32,8 +35,9 @@ class TestimonialController extends Controller
     public function store(storeTestimonialRequest $request): RedirectResponse
     {
         $request->validated();
-    
+
         Testimonial::create($request->all());
+
         return back()->with('success', 'New data has been successfully saved');
     }
 
@@ -48,17 +52,22 @@ class TestimonialController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): JsonResponse
     {
-        //
+        $testimonial = Testimonial::findOrFail($id);
+
+        return response()->json($testimonial, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(updateTestimonialRequest $request, string $id)
     {
-        //
+        $request->validated();
+
+        Testimonial::where('id', '=', $id)->update($request->only(['name', 'position', 'comment', 'rating', 'isShow']));
+        return back()->with('success', 'Data changes has been successfully saved');
     }
 
     /**

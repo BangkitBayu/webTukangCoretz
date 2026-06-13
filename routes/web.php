@@ -13,7 +13,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $pageName = "Dashboard";
-    return view('dashboard' , compact('pageName'));
+    return view('dashboard', compact('pageName'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -23,12 +23,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route projects
-    Route::get('/projects' , [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 
     // Route testimonial
-    Route::get('/testimonial' , [TestimonialController::class , 'index'])->name('testimonial.index');
-    Route::post('/testimonial' , [TestimonialController::class , 'store'])->name('testimonial.store');
-    Route::put('/testimonial' , [TestimonialController::class , 'edit'])->name('testimonial.edit');
+    Route::get('/testimonial', [TestimonialController::class, 'index'])->name('testimonial.index');
+    Route::post('/testimonial', [TestimonialController::class, 'store'])->name('testimonial.store');
+    Route::get('/testimonial/{id}', [TestimonialController::class, 'edit'])->name('testimonial.edit');
+    Route::put('/testimonial/{id}', [TestimonialController::class, 'update'])->name('testimonial.update');
 });
 
 require __DIR__ . '/auth.php';
