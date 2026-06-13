@@ -45,7 +45,8 @@ class TestimonialController extends Controller
     public function index()
     {
         $pageName = "Testimonial";
-        $testimonials = Testimonial::all(['id', 'name', 'position', 'comment', 'rating', 'isShow']);
+        // $testimonials = Testimonial::all(['id', 'name', 'position', 'comment', 'rating', 'isShow']);
+        $testimonials = Testimonial::paginate(10 );
         return view('testimonial', compact('pageName', 'testimonials'));
     }
 

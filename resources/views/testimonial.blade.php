@@ -129,6 +129,10 @@
                                     </tr>
                                 @endforeach
                             @endif
+
+                            <div class=" pagination my-2">
+                                {{ $testimonials->links() }}
+                            </div>
                         </x-slot>
                     </x-table>
                 </div>
