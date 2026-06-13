@@ -46,7 +46,7 @@ class TestimonialController extends Controller
     {
         $pageName = "Testimonial";
         // $testimonials = Testimonial::all(['id', 'name', 'position', 'comment', 'rating', 'isShow']);
-        $testimonials = Testimonial::paginate(10 );
+        $testimonials = Testimonial::paginate(10);
         return view('testimonial', compact('pageName', 'testimonials'));
     }
 
@@ -71,7 +71,7 @@ class TestimonialController extends Controller
 
         Testimonial::create($request->all());
 
-        return back()->with('success', 'New data has been successfully saved');
+        return back()->with('success', 'New data has been successfully saved.');
     }
 
     /**
@@ -105,7 +105,7 @@ class TestimonialController extends Controller
 
         Testimonial::where('id', '=', $id)->update($request->only(['name', 'position', 'comment', 'rating', 'isShow']));
 
-        return back()->with('success', 'Data changes has been successfully saved');
+        return back()->with('success', 'Data changes has been successfully saved.');
     }
 
     /**
@@ -113,6 +113,8 @@ class TestimonialController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Testimonial::destroy($id);
+
+        return back()->with('success', 'Data deleted succesfully.');
     }
 }

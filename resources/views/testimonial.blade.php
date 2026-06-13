@@ -116,14 +116,22 @@
                                                     </svg>
                                                 </x-primary-button>
 
-                                                <x-primary-button id="deleteBtn" type="submit"
-                                                    class=" bg-red-500 hover:bg-red-600 transition-colors duration-200 lg:ml-3 lg:mt-0 mt-2">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                        height="1em" viewBox="0 0 24 24">
-                                                        <path fill="currentColor"
-                                                            d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z" />
-                                                    </svg>
-                                                </x-primary-button>
+
+                                                <form x-data
+                                                    action="{{ route('testimonial.destroy', ['id' => $data->id]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <x-primary-button id="deleteBtn" type="submit"
+                                                        class=" bg-red-500 hover:bg-red-600 transition-colors duration-200 lg:ml-3 lg:mt-0 mt-2">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                                                            height="1em" viewBox="0 0 24 24">
+                                                            <path fill="currentColor"
+                                                                d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z" />
+                                                        </svg>
+                                                    </x-primary-button>
+                                                </form>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
