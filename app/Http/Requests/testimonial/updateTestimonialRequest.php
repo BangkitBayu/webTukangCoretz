@@ -36,7 +36,7 @@ class updateTestimonialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', "regex:/^([A-Z][A-Za-z\-']*)(\s[A-Za-z][A-Za-z\-']*)*$/", 'max:255', 'unique:testimonials,name'],
+            'name' => ['required', "regex:/^([A-Z][A-Za-z\-']*)(\s[A-Za-z][A-Za-z\-']*)*$/", 'max:255'],
             'position' => ['required', 'max:255'],
             'comment' => ['required'],
             'rating' => ['required', 'integer', function (string $attribute, mixed $value, \Closure $fail) {

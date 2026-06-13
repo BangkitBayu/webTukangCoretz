@@ -83,29 +83,25 @@
                                             {{ $data->rating }}/5
                                         </td>
                                         <td class="p-2">
-                                            <div class="flex flex-wrap items-center justify-center gap-12">
-                                                @if ((int) $data->isShow === 1)
-                                                    <label
-                                                        class="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
-                                                        <input type="checkbox" class="sr-only peer" checked />
-                                                        <div
-                                                            class="w-12 h-6 bg-gray-600 rounded-full peer peer-checked:bg-blue-500 transition-colors duration-200">
-                                                        </div>
-                                                        <span
-                                                            class="dot absolute left-1 top-1 w-4 h-4 bg-white/80 rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-6"></span>
-                                                    </label>
-                                                @else
-                                                    <label
-                                                        class="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
-                                                        <input type="checkbox" class="sr-only peer" />
-                                                        <div
-                                                            class="w-12 h-6  bg-gray-600 rounded-full peer peer-checked:bg-blue-500 transition-colors duration-200">
-                                                        </div>
-                                                        <span
-                                                            class="dot absolute left-1 top-1 w-4 h-4 bg-white/80 rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-6"></span>
-                                                    </label>
-                                                @endif
-                                            </div>
+                                            <form x-data x-ref="formChangeStatus"
+                                                action="{{ route('testimonial.active-status', ['id' => $data->id]) }}"
+                                                method="POST"
+                                                class="flex flex-wrap items-center justify-center gap-12">
+                                                @csrf
+
+                                                <input type="hidden" name="_method" value="PUT">
+                                                <label
+                                                    class="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
+                                                    <input type="checkbox" class="sr-only peer" name="isShow"
+                                                        {{ (int) $data->isShow === 1 ? 'checked' : '' }}
+                                                        @change="$refs.formChangeStatus.submit()" />
+                                                    <div
+                                                        class="w-12 h-6 bg-gray-600 rounded-full peer peer-checked:bg-blue-500 transition-colors duration-200">
+                                                    </div>
+                                                    <span
+                                                        class="dot absolute left-1 top-1 w-4 h-4 bg-white/80 rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-6"></span>
+                                                </label>
+                                            </form>
                                         </td>
                                         <td class="p-4">
                                             <div class=" flex items-center justify-center lg:flex-row flex-col">

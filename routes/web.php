@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/testimonial', [TestimonialController::class, 'store'])->name('testimonial.store');
     Route::get('/testimonial/{id}', [TestimonialController::class, 'edit'])->name('testimonial.edit');
     Route::put('/testimonial/{id}', [TestimonialController::class, 'update'])->name('testimonial.update');
+    Route::put('/testimonial/{id}/active-status', [TestimonialController::class, 'updateActiveStatusTestimonial'])->name('testimonial.active-status');
 });
 
 require __DIR__ . '/auth.php';
