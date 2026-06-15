@@ -46,7 +46,7 @@ class TestimonialController extends Controller
     {
         $pageName = "Testimonial";
         // $testimonials = Testimonial::all(['id', 'name', 'position', 'comment', 'rating', 'isShow']);
-        $testimonials = Testimonial::paginate(10);
+        $testimonials = Testimonial::latest('created_at')->paginate(10);
         return view('testimonial', compact('pageName', 'testimonials'));
     }
 
