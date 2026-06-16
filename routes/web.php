@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController as ControllersProjectController;
 use App\Http\Controllers\projectManagement\ProjectController;
+use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route projects
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
 
     // Route testimonial
     Route::get('/testimonial', [TestimonialController::class, 'index'])->name('testimonial.index');

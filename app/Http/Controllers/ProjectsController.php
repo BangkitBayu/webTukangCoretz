@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
 
-class ProjectController extends Controller
+class ProjectsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('projects');
+        $pageName = "Projects";
+        $projects = Project::latest('created_at')->paginate(10);
+        return view('projects', compact('pageName' , 'projects'));
     }
 
     /**
