@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController as ControllersProjectController;
 use App\Http\Controllers\projectManagement\ProjectController;
@@ -25,6 +26,9 @@ Route::middleware('auth')->group(function () {
 
     // Route projects
     Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
+
+    // Route categories
+    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 
     // Route testimonial
     Route::get('/testimonial', [TestimonialController::class, 'index'])->name('testimonial.index');
