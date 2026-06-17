@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CategoryProjectFactory extends Factory
 {
+    protected $model = CategoryProject::class;
     /**
      * Define the model's default state.
      *
@@ -17,8 +18,9 @@ class CategoryProjectFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->unique()->words(2, true);
         return [
-            'name' => fake()->company()
+            'name' => ucwords($name)
         ];
     }
 }

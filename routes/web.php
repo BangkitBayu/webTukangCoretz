@@ -24,8 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Route projects
-    Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
 
     // Route categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
@@ -37,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::put('/testimonial/{id}', [TestimonialController::class, 'update'])->name('testimonial.update');
     Route::put('/testimonial/{id}/active-status', [TestimonialController::class, 'updateActiveStatusTestimonial'])->name('testimonial.active-status');
     Route::delete('/testimonial/{id}', [TestimonialController::class, 'destroy'])->name('testimonial.destroy');
+    // Route projects
+    Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
+    Route::post('/projects', [ProjectsController::class, 'store'])->name('projects.store');
+    Route::put('/projects/{id}', [ProjectsController::class, 'update'])->name('projects.update');
 });
 
 require __DIR__ . '/auth.php';

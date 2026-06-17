@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoryProject;
 use App\Models\Project;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class ProjectsController extends Controller
     {
         $pageName = "Projects";
         $projects = Project::latest('created_at')->paginate(10);
-        return view('projects', compact('pageName' , 'projects'));
+        $categories = CategoryProject::all(['id', 'name']);
+        return view('projects', compact('pageName', 'projects', 'categories'));
     }
 
     /**

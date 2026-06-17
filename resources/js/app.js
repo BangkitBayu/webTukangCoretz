@@ -7,6 +7,49 @@ window.Alpine = Alpine;
 const apiUrl = "http://localhost:8000/";
 
 document.addEventListener("alpine:init", () => {
+    Alpine.store("categories", {
+        collection: [],
+    });
+
+    Alpine.store("formProject", {
+        openForm: false,
+        isEdit: false,
+
+        formData: {
+            id: null,
+            name: "",
+            slug: "",
+            description: "",
+            thumbnail: "",
+            start_date: "",
+            end_date: "",
+            isShow: 0,
+            category_id: "",
+        },
+
+        toggle() {
+            this.openForm = !this.openForm;
+            this.isEdit = false;
+        },
+
+        closeFormEdit() {
+            this.openForm = !this.openForm;
+            this.isEdit = !this.isEdit;
+
+            formData = {
+                id: null,
+                name: "",
+                slug: "",
+                description: "",
+                thumbnail: "",
+                start_date: "",
+                end_date: "",
+                isShow: 0,
+                category_id: "",
+            };
+        },
+    });
+
     Alpine.store("formTestimonial", {
         isEdit: false,
         show: false,
@@ -43,7 +86,6 @@ document.addEventListener("alpine:init", () => {
 
                 const data = await response.json();
                 this.formData = data;
-                console.log(this.formData);
             } catch (error) {
                 console.error(error.message);
             }

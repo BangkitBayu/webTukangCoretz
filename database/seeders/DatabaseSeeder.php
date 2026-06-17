@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\CategoryProject;
 use App\Models\User;
+use Database\Factories\CategoryProjectFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,5 +25,7 @@ class DatabaseSeeder extends Seeder
             'password' => 'admin123',
             'role' => 'admin',
         ]);
+
+        CategoryProject::factory()->count(5)->create();
     }
 }
