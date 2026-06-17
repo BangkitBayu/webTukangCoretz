@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
 
     // Route categories
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+    Route::get('/categories/{id}', [CategoryController::class, 'edit'])->name('categories.edit');
 
     // Route testimonial
     Route::get('/testimonial', [TestimonialController::class, 'index'])->name('testimonial.index');
@@ -38,7 +39,8 @@ Route::middleware('auth')->group(function () {
     // Route projects
     Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
     Route::post('/projects', [ProjectsController::class, 'store'])->name('projects.store');
-    Route::put('/projects/{id}', [ProjectsController::class, 'update'])->name('projects.update');
+    Route::get('/projects/{id}', [ProjectsController::class, 'edit'])->name('projects.edit');
+    Route::put('/projects/{project}', [ProjectsController::class, 'update'])->name('projects.update');
 });
 
 require __DIR__ . '/auth.php';

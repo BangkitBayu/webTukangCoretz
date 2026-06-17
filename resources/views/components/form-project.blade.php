@@ -1,7 +1,7 @@
 @props(['routeStore'])
 
 @php
-    $routeUpdate = route('projects.update', ['id' => 'ID']);
+    $routeUpdate = route('projects.update', ['project' => 'ID']);
 @endphp
 
 <div x-show="$store.formProject.openForm" x-data="{ isLoading: false }"
@@ -49,7 +49,6 @@
 
             <div class="flex flex-col justify-start mb-2 select-text">
                 <x-input-label value="Upload your project thumbnail" class=" mb-2"></x-input-label>
-
                 <x-upload-thumbnail></x-upload-thumbnail>
             </div>
 
@@ -59,7 +58,8 @@
                 <p class="text-sm  text-white/60">Enter date where you receive this project.</p>
 
                 <x-input-date type="date" name="start_date" id="startDate"
-                    class="outline-none w-full mt-2 bg-gray-700 text-white/80 border-gray-600"></x-input-date>
+                    class="outline-none w-full mt-2 bg-gray-700 text-white/80 border-gray-600"
+                    x-model="$store.formProject.formData.start_date"></x-input-date>
 
                 @error('start_date')
                     <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
@@ -71,7 +71,8 @@
                 <p class="text-sm  text-white/60">Enter date where you completed this project.</p>
 
                 <x-input-date type="date" name="end_date" id="endDate"
-                    class="outline-none w-full mt-2 bg-gray-700 text-white/80 border-gray-600"></x-input-date>
+                    class="outline-none w-full mt-2 bg-gray-700 text-white/80 border-gray-600"
+                    x-model="$store.formProject.formData.end_date"></x-input-date>
 
                 @error('end_date')
                     <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
@@ -82,7 +83,7 @@
                 <x-input-label value="Is show?"></x-input-label>
                 <p class="text-sm  text-white/60">Select the option to display your project or not.</p>
                 <x-select-input id="isShow" name="is_show" class=" mt-2 text-white/80 bg-gray-700 border-gray-600"
-                    required>
+                    required x-model="$store.formProject.formData.is_show">
                     <option value="0">False</option>
                     <option value="1">True</option>
                 </x-select-input>
@@ -97,7 +98,8 @@
                 <x-input-label value="Category project"></x-input-label>
                 {{-- <p class="text-sm  text-white/60">Choose your category project</p> --}}
                 <x-select-input id="category" name="category_id"
-                    class=" mt-2 text-white/80 bg-gray-700 border-gray-600" required>
+                    class=" mt-2 text-white/80 bg-gray-700 border-gray-600" required
+                    x-model="$store.formProject.formData.category_id">
                     <option>Choose your category project</option>
                     <template x-for="(value, index) in $store.categories.collection">
                         <option :value="value.id" x-text="value.name"></option>

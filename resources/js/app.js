@@ -36,7 +36,7 @@ document.addEventListener("alpine:init", () => {
             this.openForm = !this.openForm;
             this.isEdit = !this.isEdit;
 
-            formData = {
+            this.formData = {
                 id: null,
                 name: "",
                 slug: "",
@@ -47,6 +47,24 @@ document.addEventListener("alpine:init", () => {
                 is_show: 0,
                 category_id: "",
             };
+        },
+
+        async openFormEdit(id) {
+            this.openForm = !this.openForm;
+            this.isEdit = true;
+
+            try {
+                const response = await fetch(apiUrl + `projects/${id}`);
+
+                if (!response.ok) {
+                    throw new Error(`Response status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                this.formData = data;
+            } catch (error) {
+                console.error(error.message);
+            }
         },
     });
 

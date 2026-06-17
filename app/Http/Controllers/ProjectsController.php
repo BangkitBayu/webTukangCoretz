@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\project\storeProjectRequest;
+use App\Http\Requests\project\updateProjectRequest;
 use App\Models\CategoryProject;
 use App\Models\Project;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -16,7 +18,7 @@ class ProjectsController extends Controller
     public function index()
     {
         $pageName = "Projects";
-        $projects = Project::latest('created_at')->paginate(10);
+        $projects = Project::with('category:id,name')->latest('created_at')->paginate(10);
         // dd($projects);
         $categories = CategoryProject::all(['id', 'name']);
         return view('projects', compact('pageName', 'projects', 'categories'));
@@ -41,8 +43,6 @@ class ProjectsController extends Controller
 
         $project->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
 
-        $project->getFirstMediaUrl('thumbnail', 'webp');
-
         return back()->with('success', 'New data has been successfully saved.');
     }
 
@@ -57,17 +57,28 @@ class ProjectsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): JsonResponse
     {
-        //
+        $project = Project::findOrFail($id);
+        return response()->json($project, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(updateProjectRequest $request, Project $project): RedirectResponse
     {
-        //
+        $payload = $request->validated();
+
+        unset($payload['thumbnail']);
+
+        $project->update($payload);
+
+        if ($request->hasFile('thumbnail')) {
+            $project->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
+        }
+
+        return back()->with('success', 'Data changes has been successfully saved.');
     }
 
     /**
