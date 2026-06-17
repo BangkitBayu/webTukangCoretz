@@ -86,6 +86,8 @@ class ProjectsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Project::destroy($id);
+
+        return back()->with('success', 'Data deleted succesfully.');
     }
 }

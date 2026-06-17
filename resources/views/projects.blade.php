@@ -126,7 +126,9 @@
                                                 </x-primary-button>
 
 
-                                                <form x-data {{-- action="{{ route('testimonial.destroy', ['id' => $data->id]) }}" --}} method="POST">
+                                                <form x-data
+                                                    action="{{ route('projects.destroy', ['id' => $data->id]) }}"
+                                                    method="POST">
                                                     @csrf
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     <x-primary-button id="deleteBtn" type="submit"
