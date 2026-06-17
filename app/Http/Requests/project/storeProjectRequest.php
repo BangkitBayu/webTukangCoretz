@@ -39,8 +39,9 @@ class storeProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'uppercase', 'max:255'],
-            'thumbnail' => ['required', 'string'],
+            'name' => ['required', "regex:/^([A-Z][A-Za-z0-9\-']*)(\s[A-Za-z0-9][A-Za-z0-9\-']*)*$/", 'max:255', 'unique:projects,name'],
+            'slug' => ['required', 'alpha_dash'],
+            'thumbnail' => ['required', 'image', 'mimes:png,jpg,jpeg,webp', 'max:2048'],
             'description' => ['required'],
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\project\storeProjectRequest;
 use App\Models\CategoryProject;
 use App\Models\Project;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
@@ -15,6 +17,7 @@ class ProjectsController extends Controller
     {
         $pageName = "Projects";
         $projects = Project::latest('created_at')->paginate(10);
+        // dd($projects);
         $categories = CategoryProject::all(['id', 'name']);
         return view('projects', compact('pageName', 'projects', 'categories'));
     }
@@ -22,17 +25,25 @@ class ProjectsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(storeProjectRequest $request): RedirectResponse
     {
-        //
+        $payload = $request->validated();
+
+        // dd($payload);
+
+        unset($payload['thumbnail']);
+        $project = Project::create($payload);
+
+        $project->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
+
+        $project->getFirstMediaUrl('thumbnail', 'webp');
+
+        return back()->with('success', 'New data has been successfully saved.');
     }
 
     /**

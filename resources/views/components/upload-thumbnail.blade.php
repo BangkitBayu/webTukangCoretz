@@ -81,7 +81,7 @@
 
     {{-- Error dari server (Blade) --}}
     @error('thumbnail')
-        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+        <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
     @enderror
 </div>
 

@@ -15,7 +15,7 @@
             x-text="$store.formProject.isEdit ? 'Update your project data.' : 'Upload your project and show up to your customer.'">
         </p>
         <hr class="border-white/10 border mb-2">
-        <form method="POST" @submit="isLoading = true"
+        <form method="POST" @submit="isLoading = true" enctype="multipart/form-data"
             :action="$store.formProject.isEdit ?
                 '{{ $routeUpdate }}'.replace('ID', $store.formProject.formData.id) :
                 '{{ $routeStore }}'"
@@ -60,6 +60,10 @@
 
                 <x-input-date type="date" name="start_date" id="startDate"
                     class="outline-none w-full mt-2 bg-gray-700 text-white/80 border-gray-600"></x-input-date>
+
+                @error('start_date')
+                    <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class=" flex flex-col justify-start mb-2">
@@ -68,6 +72,10 @@
 
                 <x-input-date type="date" name="end_date" id="endDate"
                     class="outline-none w-full mt-2 bg-gray-700 text-white/80 border-gray-600"></x-input-date>
+
+                @error('end_date')
+                    <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                @enderror
             </div>
             <div class=" flex flex-col justify-start mb-2">
 
@@ -78,6 +86,10 @@
                     <option value="0">False</option>
                     <option value="1">True</option>
                 </x-select-input>
+
+                @error('is_show')
+                    <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             <div class=" flex flex-col justify-start mb-3">
@@ -91,6 +103,10 @@
                         <option :value="value.id" x-text="value.name"></option>
                     </template>
                 </x-select-input>
+
+                @error('category_id')
+                    <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                @enderror
             </div>
             <div class="flex items-center justify-center w-full">
                 <x-primary-button type="button" class=" w-2/4 bg-gray-700 hover:bg-gray-600">
