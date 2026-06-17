@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('thumbnail')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->enum('is_published', [0, 1])->default(0);
+            $table->enum('is_show', [0, 1])->default(0);
             $table->timestamps();
             $table->foreignId('category_id')->constrained('category_projects')->onDelete('set null');
         });

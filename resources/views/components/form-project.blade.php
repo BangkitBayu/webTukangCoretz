@@ -73,7 +73,7 @@
 
                 <x-input-label value="Is show?"></x-input-label>
                 <p class="text-sm  text-white/60">Select the option to display your project or not.</p>
-                <x-select-input id="isShow" name="isShow" class=" mt-2 text-white/80 bg-gray-700 border-gray-600"
+                <x-select-input id="isShow" name="is_show" class=" mt-2 text-white/80 bg-gray-700 border-gray-600"
                     required>
                     <option value="0">False</option>
                     <option value="1">True</option>

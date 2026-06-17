@@ -23,7 +23,7 @@ document.addEventListener("alpine:init", () => {
             thumbnail: "",
             start_date: "",
             end_date: "",
-            isShow: 0,
+            is_show: 0,
             category_id: "",
         },
 
@@ -44,7 +44,7 @@ document.addEventListener("alpine:init", () => {
                 thumbnail: "",
                 start_date: "",
                 end_date: "",
-                isShow: 0,
+                is_show: 0,
                 category_id: "",
             };
         },

@@ -12,7 +12,7 @@ class Project extends Model implements HasMedia
 {
 
     use InteractsWithMedia;
-    
+
     protected $fillable = [
         'name',
         'slug',
@@ -20,7 +20,7 @@ class Project extends Model implements HasMedia
         'thumbnail',
         'start_date',
         'end_date',
-        'is_published',
+        'is_show',
         'category_id'
     ];
 
