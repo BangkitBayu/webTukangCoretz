@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index(CategoryProject $category)
     {
         $pageName = 'Categories';
-        $categories = $category->get(['id', 'name']);
+        $categories = $category->select(['id', 'name'])->withCount('project')->get();
         return view('categories', compact('pageName', 'categories'));
     }
 

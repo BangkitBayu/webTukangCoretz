@@ -24,6 +24,17 @@
                                 placeholder="Search categories here"
                                 x-model="$store.categories.searchCategory"></x-text-input>
                         </x-slot>
+                        <x-slot name="clearInput">
+                            <button x-show="$store.categories.searchCategory.length > 0" x-transition
+                                class="cursor-pointer" @click="$store.categories.searchCategory = ''">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class=" text-red-300 text-xl mr-3 ml-3 transition-transform ease-in duration-200"
+                                    width="1em" height="1em" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z" />
+                                </svg>
+                            </button>
+                        </x-slot>
                     </x-search-bar>
                     <x-primary-button class=" flex items-center justify-center ml-2 whitespace-nowrap" type="button"
                         x-data @click="$store.formProject.toggle()">
@@ -55,7 +66,7 @@
                                 <tr :key="value.id"
                                     class="text-sm text-white/70 text-center border-b border-white/10">
                                     <td class=" p-2 text-left" x-text="value.name"></td>
-                                    <td class=" p-2" x-text="value.name"></td>
+                                    <td class=" p-2" x-text="value.project_count"></td>
                                     <td class=" p-2 flex items-center justify-center lg:flex-row flex-col">
                                         <x-primary-button id="editBtn" type="submit" x-data {{-- @click="$store.formProject.openFormEdit ({{ $data->id }})" --}}
                                             class=" bg-blue-500 hover:bg-blue-600 transition-colors duration-200">

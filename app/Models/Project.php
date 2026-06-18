@@ -35,7 +35,7 @@ class Project extends Model implements HasMedia
         'start_date',
         'end_date',
         'is_show',
-        'category_id'
+        'category_project_id'
     ];
 
     public function category(): BelongsTo
