@@ -12,10 +12,11 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(CategoryProject $category)
     {
         $pageName = 'Categories';
-        return view('categories', compact('pageName'));
+        $categories = $category->get(['id', 'name']);
+        return view('categories', compact('pageName', 'categories'));
     }
 
     /**

@@ -140,7 +140,7 @@
                                                         </svg>
                                                     </x-primary-button>
                                                 </form>
-                                                </a>
+
                                             </div>
                                         </td>
                                     </tr>

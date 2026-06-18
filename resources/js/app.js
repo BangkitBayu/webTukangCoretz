@@ -9,6 +9,17 @@ const apiUrl = "http://localhost:8000/";
 document.addEventListener("alpine:init", () => {
     Alpine.store("categories", {
         collection: [],
+        collectionWithCount: [],
+
+        searchCategory: "",
+
+        filteredCategory() {
+            return this.collectionWithCount.filter((c) =>
+                c.name
+                    .toLowerCase()
+                    .includes(this.searchCategory.toLowerCase()),
+            );
+        },
     });
 
     Alpine.store("formProject", {

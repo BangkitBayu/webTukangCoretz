@@ -96,7 +96,6 @@
             <div class=" flex flex-col justify-start mb-3">
 
                 <x-input-label value="Category project"></x-input-label>
-                {{-- <p class="text-sm  text-white/60">Choose your category project</p> --}}
                 <x-select-input id="category" name="category_id"
                     class=" mt-2 text-white/80 bg-gray-700 border-gray-600" required
                     x-model="$store.formProject.formData.category_id">
@@ -111,9 +110,9 @@
                 @enderror
             </div>
             <div class="flex items-center justify-center w-full">
-                <x-primary-button type="button" class=" w-2/4 bg-gray-700 hover:bg-gray-600">
-                    <p class=" text-white/80 text-sm font-bold text-center" x-data
-                        @click="$store.formProject.closeFormEdit()">
+                <x-primary-button type="button" class=" w-2/4 bg-gray-700 hover:bg-gray-600" x-data
+                    @click="$store.formProject.closeFormEdit()">
+                    <p class=" text-white/80 text-sm font-bold text-center">
                         Cancel</p>
                 </x-primary-button>
 
