@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12 relative" x-data>
+    <div class="py-12 relative" x-data="{ isEdit: false, isLoading: false }">
         @if (session('success'))
             <x-alert :status="__('success')" :message="session('success')" x-transition></x-alert>
         @elseif (session('error'))
@@ -37,12 +37,12 @@
                         </x-slot>
                     </x-search-bar>
                     <x-primary-button class=" flex items-center justify-center ml-2 whitespace-nowrap" type="button"
-                        x-data @click="$store.formProject.toggle()">
+                        @click="$dispatch('open-modal' , 'storeCategoryForm')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M11 13H6q-.425 0-.712-.288T5 12t.288-.712T6 11h5V6q0-.425.288-.712T12 5t.713.288T13 6v5h5q.425 0 .713.288T19 12t-.288.713T18 13h-5v5q0 .425-.288.713T12 19t-.712-.288T11 18z" />
                         </svg>
-                        <p class=" text-sm ml-3">New project</p>
+                        <p class=" text-sm ml-3">New category</p>
                     </x-primary-button>
                 </div>
 
@@ -103,5 +103,58 @@
                 </div>
             </div>
 
+            <x-modal name="storeCategoryForm">
+                <x-slot:header>
+                    <div class=" p-3 m-auto">
+                        <h3 class=" text-lg text-white/80 font-semibold text-center"
+                            x-text="isEdit ? 'Edit Category' : 'Add Category'"></h3>
+                    </div>
+                </x-slot:header>
+
+                <x-slot:content>
+                    <form
+                        :action="isEdit ? '{{ route('categories.update', ['id' => 'ID']) }}' : '{{ route('categories.store') }}'"
+                        class=" flex flex-col p-3" @submit="isLoading = true">
+                        @csrf
+                        <input type="hidden" name="_method" :value="isEdit ? 'PUT' : 'POST'">
+
+                        <div class="flex flex-col justify-start">
+                            <x-input-label :value="__('Category Name')"
+                                class=" mb-1 after:content-['*'] after:text-red-600"></x-input-label>
+                            <x-text-input
+                                class=" outline-none w-full p-2 bg-gray-600 text-white/80 border-gray-600 mb-1"
+                                autofocus placeholder="Enter new category name" required></x-text-input>
+                            <p class=" text-sm text-gray-500">e.g., Renovasi rumah, Restaurant, and Hotel</p>
+                        </div>
+                    </form>
+                </x-slot:content>
+
+                <x-slot:footer>
+                    <div class=" flex p-3">
+                        <x-primary-button type="button" class=" w-2/4 bg-gray-700 hover:bg-gray-600" x-data
+                            @click="$dispatch('close-modal' , 'storeCategoryForm')">
+                            <p class=" text-white/80 text-sm font-bold text-center">
+                                Close</p>
+                        </x-primary-button>
+
+                        <x-primary-button class="ml-2 w-2/4">
+                            <template x-if="isLoading">
+                                <div class="flex items-center justify-center">
+                                    <svg class="w-5 h-5 animate-spin border-4 rounded-full border-white/70 mr-3 border-t-transparent"
+                                        viewBox="0 0 24 24"></svg>
+                                    {{ __('Please wait...') }}
+                                </div>
+                            </template>
+
+                            <template x-if="!isLoading">
+                                <p class=" text-white/80 text-sm font-bold text-center" x-data
+                                    x-text="isEdit ? 'Save changes' : 'Add Category'">
+                            </template>
+                        </x-primary-button>
+                    </div>
+                </x-slot:footer>
+            </x-modal>
         </div>
+
+    </div>
 </x-app-layout>

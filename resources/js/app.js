@@ -22,6 +22,10 @@ document.addEventListener("alpine:init", () => {
         },
     });
 
+    Alpine.store("formCategory", {
+        openForm: false
+    });
+
     Alpine.store("formProject", {
         openForm: false,
         isEdit: false,
