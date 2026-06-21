@@ -11,6 +11,12 @@ document.addEventListener("alpine:init", () => {
         collection: [],
         collectionWithCount: [],
 
+        formData: {
+            id: null,
+            name: "",
+            count_project: "",
+        },
+
         searchCategory: "",
 
         filteredCategory() {
@@ -20,10 +26,22 @@ document.addEventListener("alpine:init", () => {
                     .includes(this.searchCategory.toLowerCase()),
             );
         },
-    });
 
-    Alpine.store("formCategory", {
-        openForm: false
+        async getCategoryById(id) {
+            try {
+                const response = await fetch(apiUrl + `categories/${id}`);
+
+                if (!response.ok) {
+                    throw new Error(response.message);
+                }
+
+                const payload = await response.json();
+                this.formData = payload.data;
+                // console.log(payload.data);
+            } catch (error) {
+                console.log(error.message);
+            }
+        },
     });
 
     Alpine.store("formProject", {

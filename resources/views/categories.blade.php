@@ -37,7 +37,7 @@
                         </x-slot>
                     </x-search-bar>
                     <x-primary-button class=" flex items-center justify-center ml-2 whitespace-nowrap" type="button"
-                        @click="$dispatch('open-modal' , 'storeCategoryForm')">
+                        @click="$dispatch('open-modal' , 'category-form')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                             <path fill="currentColor"
                                 d="M11 13H6q-.425 0-.712-.288T5 12t.288-.712T6 11h5V6q0-.425.288-.712T12 5t.713.288T13 6v5h5q.425 0 .713.288T19 12t-.288.713T18 13h-5v5q0 .425-.288.713T12 19t-.712-.288T11 18z" />
@@ -68,7 +68,8 @@
                                     <td class=" p-2 text-left" x-text="value.name"></td>
                                     <td class=" p-2" x-text="value.project_count"></td>
                                     <td class=" p-2 flex items-center justify-center lg:flex-row flex-col">
-                                        <x-primary-button id="editBtn" type="submit" x-data {{-- @click="$store.formProject.openFormEdit ({{ $data->id }})" --}}
+                                        <x-primary-button id="editBtn" type="button"
+                                            @click="$dispatch('open-modal' , 'category-form'), isEdit = true, $store.categories.getCategoryById(value.id)"
                                             class=" bg-blue-500 hover:bg-blue-600 transition-colors duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
                                                 viewBox="0 0 24 24">
@@ -103,7 +104,7 @@
                 </div>
             </div>
 
-            <x-modal name="storeCategoryForm">
+            <x-modal name="category-form">
                 <x-slot:header>
                     <div class=" p-3 m-auto">
                         <h3 class=" text-lg text-white/80 font-semibold text-center"
@@ -113,8 +114,11 @@
 
                 <x-slot:content>
                     <form
-                        :action="isEdit ? '{{ route('categories.update', ['id' => 'ID']) }}' : '{{ route('categories.store') }}'"
-                        class=" flex flex-col p-3" @submit="isLoading = true">
+                        :action="isEdit ?
+                            '{{ route('categories.update', ['id' => 'ID']) }}'.replace('ID', $store.categories.formData
+                                .id) :
+                            '{{ route('categories.store') }}'"
+                        class=" flex flex-col p-3" @submit="isLoading = true" id="category-form" method="POST">
                         @csrf
                         <input type="hidden" name="_method" :value="isEdit ? 'PUT' : 'POST'">
 
@@ -123,8 +127,13 @@
                                 class=" mb-1 after:content-['*'] after:text-red-600"></x-input-label>
                             <x-text-input
                                 class=" outline-none w-full p-2 bg-gray-600 text-white/80 border-gray-600 mb-1"
-                                autofocus placeholder="Enter new category name" required></x-text-input>
+                                autofocus placeholder="Enter new category name" name="category_name" required
+                                x-model="$store.categories.formData.name"></x-text-input>
                             <p class=" text-sm text-gray-500">e.g., Renovasi rumah, Restaurant, and Hotel</p>
+
+                            @error('category_name')
+                                <p class=" text-sm text-red-600 mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </form>
                 </x-slot:content>
@@ -132,12 +141,12 @@
                 <x-slot:footer>
                     <div class=" flex p-3">
                         <x-primary-button type="button" class=" w-2/4 bg-gray-700 hover:bg-gray-600" x-data
-                            @click="$dispatch('close-modal' , 'storeCategoryForm')">
+                            @click="$dispatch('close-modal' , 'category-form')">
                             <p class=" text-white/80 text-sm font-bold text-center">
                                 Close</p>
                         </x-primary-button>
 
-                        <x-primary-button class="ml-2 w-2/4">
+                        <x-primary-button class="ml-2 w-2/4" type="submit" form="category-form">
                             <template x-if="isLoading">
                                 <div class="flex items-center justify-center">
                                     <svg class="w-5 h-5 animate-spin border-4 rounded-full border-white/70 mr-3 border-t-transparent"

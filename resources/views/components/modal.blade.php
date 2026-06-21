@@ -11,14 +11,14 @@
         ][$maxWidth] ?? 'max-w-md';
 @endphp
 
-<div x-data="{
+<div x-cloak x-data="{
     open: false,
     modelName: '{{ $name }}',
     init() {
         window.addEventListener('open-modal', (e) => {
             if (e.detail == this.modelName) {
                 this.open = true
-
+                alert('gg')
             }
         });
 
