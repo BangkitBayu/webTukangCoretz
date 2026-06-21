@@ -96,7 +96,7 @@
             <div class=" flex flex-col justify-start mb-3">
 
                 <x-input-label value="Category project"></x-input-label>
-                <x-select-input id="category" name="category_id"
+                <x-select-input id="category" name="category_project_id"
                     class=" mt-2 text-white/80 bg-gray-700 border-gray-600" required
                     x-model="$store.formProject.formData.category_id">
                     <option>Choose your category project</option>
@@ -105,7 +105,7 @@
                     </template>
                 </x-select-input>
 
-                @error('category_id')
+                @error('category_project_id')
                     <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
                 @enderror
             </div>

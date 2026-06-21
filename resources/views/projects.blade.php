@@ -69,7 +69,7 @@
                                 </tr>
                             @else
                                 @foreach ($projects as $data)
-                                    <tr :id="$data->id"
+                                    <tr id="{{ $data->id }}"
                                         class="text-sm text-white/70 text-center border-b border-white/10">
                                         <td class="p-2">
                                             @if ($data->hasMedia('thumbnail'))
@@ -82,19 +82,19 @@
                                             {{ $data->name }}
                                         </td>
                                         <td class=" p-2 ">
-                                            {{ $data->category->name }}
+                                            {{ $data->category?->name }}
                                         </td>
                                         <td class=" p-2 text-justify">
                                             {{ $data->description }}
                                         </td>
                                         <td class=" p-2 whitespace-nowrap">
-                                            {{ $data->start_date }}
+                                            {{ $data->start_date  }}
                                         </td>
                                         <td class=" p-2 whitespace-nowrap">
                                             {{ $data->end_date }}
                                         </td>
                                         <td class=" p-2 ">
-                                            <form x-data x-ref="formChangeStatus" {{-- action="{{ route('testimonial.active-status', ['id' => $data->id]) }}" --}} method="POST"
+                                            <form x-data x-ref="formChangeStatus" method="POST"
                                                 class="flex flex-wrap items-center justify-center gap-12">
                                                 @csrf
 
@@ -146,8 +146,12 @@
                                     </tr>
                                 @endforeach
                             @endif
+
                         </x-slot>
                     </x-table>
+                    <div class=" pagination my-2">
+                        {{ $projects->links() }}
+                    </div>
                 </div>
             </div>
         </div>

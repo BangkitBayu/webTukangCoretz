@@ -26,8 +26,8 @@ return new class extends Migration
         Schema::table('projects', function (Blueprint $table) {
             $table->foreignId('category_id')->constrained()->nullOnDelete();
 
-            $table->dropForeign(['category_projects_id']);
-            $table->dropColumn('category_projects_id');
+            $table->dropForeign(['category_project_id']);
+            $table->dropColumn('category_project_id');
         });
     }
 };

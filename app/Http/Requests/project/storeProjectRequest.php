@@ -27,7 +27,7 @@ class storeProjectRequest extends FormRequest
         $this->merge([
             'slug' => Str::slug($this->name),
             'is_show' => (int) $this->is_show,
-            'category_id' => (int) $this->category_id,
+            'category_project_id' => (int) $this->category_project_id,
         ]);
     }
 
@@ -46,7 +46,7 @@ class storeProjectRequest extends FormRequest
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],
             'is_show' => ['required', 'integer', 'in:0,1'],
-            'category_id' => ['required', 'integer', 'exists:category_projects,id']
+            'category_project_id' => ['required', 'integer', 'exists:category_projects,id']
         ];
     }
 

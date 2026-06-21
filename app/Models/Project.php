@@ -40,6 +40,6 @@ class Project extends Model implements HasMedia
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(CategoryProject::class);
+        return $this->belongsTo(CategoryProject::class, 'category_project_id', 'id');
     }
 }
