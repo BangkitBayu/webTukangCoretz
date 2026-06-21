@@ -42,6 +42,14 @@ document.addEventListener("alpine:init", () => {
                 console.log(error.message);
             }
         },
+
+        resetFormData() {
+            return {
+                id: null,
+                name: "",
+                count_project: "",
+            };
+        },
     });
 
     Alpine.store("formProject", {

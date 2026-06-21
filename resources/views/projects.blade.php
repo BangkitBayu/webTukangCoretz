@@ -82,13 +82,17 @@
                                             {{ $data->name }}
                                         </td>
                                         <td class=" p-2 ">
-                                            {{ $data->category?->name }}
+                                            @if ($data->category)
+                                                {{ $data->category->name }}
+                                            @else
+                                                <p class=" text-white/60 font-semibold">Category not found</p>
+                                            @endif
                                         </td>
                                         <td class=" p-2 text-justify">
                                             {{ $data->description }}
                                         </td>
                                         <td class=" p-2 whitespace-nowrap">
-                                            {{ $data->start_date  }}
+                                            {{ $data->start_date }}
                                         </td>
                                         <td class=" p-2 whitespace-nowrap">
                                             {{ $data->end_date }}

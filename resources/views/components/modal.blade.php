@@ -18,7 +18,6 @@
         window.addEventListener('open-modal', (e) => {
             if (e.detail == this.modelName) {
                 this.open = true
-                alert('gg')
             }
         });
 

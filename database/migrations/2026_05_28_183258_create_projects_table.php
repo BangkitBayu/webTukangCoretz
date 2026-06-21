@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('end_date');
             $table->enum('is_show', [0, 1])->default(0);
             $table->timestamps();
-            $table->foreignId('category_id')->constrained('category_projects')->onDelete('set null');
+            $table->foreignId('category_id')->nullable()->constrained('category_projects')->nullOnDelete();
         });
     }
 

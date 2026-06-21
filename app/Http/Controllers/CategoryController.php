@@ -47,21 +47,18 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id): JsonResponse
+    public function show(string $id): JsonResponse
     {
         $category = CategoryProject::select(['id', 'name'])->where('id', $id)->withCount('project')->find($id);
 
         if (!$category) return response()->json(['message' => 'Category not found'], 404);
         return response()->json(['message' => 'Category successfully taken', 'data' => $category], 200);
     }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id) {}
 
     /**
      * Update the specified resource in storage.
@@ -82,8 +79,14 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        //
+        $category = CategoryProject::find($id);
+
+        if (!$category) return back()->with('error', 'Category not found');
+
+        CategoryProject::destroy($id);
+
+        return back()->with('success', 'Category' .  $category->name .  ' successfully deleted.');
     }
 }
