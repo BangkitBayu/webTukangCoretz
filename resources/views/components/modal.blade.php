@@ -27,7 +27,7 @@
             }
         });
     }
-}" x-show="open == true" x-transition
+}"  x-show="open == true" x-cloak x-transition
     {{ $attributes->merge(['class' => 'fixed inset-0 z-50 bg-black/50 flex items-center justify-center']) }}>
     <div class="{{ $maxWidthClass }} w-full h-auto bg-gray-800 border border-gray-600 rounded-md flex flex-col overflow-y-auto"
         style="scrollbar-width:thin; scrollbar-color: #374151 #f3f4f6;">

@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller
     public function create(): View
     {
         $title = "Tukang Coretz | Login";
-        return view('auth.login' , compact('title'));
+        return view('auth.login', compact('title'));
     }
 
     /**
@@ -46,6 +46,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->intended(route('login'));
     }
 }

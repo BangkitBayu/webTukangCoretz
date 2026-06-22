@@ -3,3 +3,7 @@
 @tailwind utilities;
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+[x-cloak] {
+    display: none !important;
+}
