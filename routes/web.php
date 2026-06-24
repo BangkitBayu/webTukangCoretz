@@ -9,8 +9,7 @@ use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $title = "Tukang Coretz";
-    return view('index', compact("title"));
+    return view('index');
 })->name('index');
 
 Route::get('/dashboard', function () {
