@@ -19,31 +19,77 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class=" font-[Montserrat] antialiased box-border bg-zinc-950">
+<body class=" font-[Montserrat] antialiased box-border bg-zinc-950 relative">
     {{-- Page header --}}
-    <header class=" fixed top-0  bg-transparent z-50 w-full">
-        <div class="flex items-center justify-between px-4 w-full">
+    <header class=" relative  top-0  z-50 w-full" x-data="{ open: false }">
+        <div
+            class=" fixed flex items-center justify-between px-3 w-full bg-neutral-900/95 backdrop-blur-sm  lg:bg-transparent">
             <a href="{{ route('index') }}">
                 <div class=" inline-flex items-center justify-center">
-                    <x-application-logo></x-application-logo>
-                    <h3 class=" text-white font-semibold text-lg ml-1">Tukang Coretz</h3>
+                    <x-application-logo class=" w-20 h-20 m-0 p-0"></x-application-logo>
+                    <h3 class=" text-white font-semibold text-lg max-w-1">Tukang Coretz</h3>
                 </div>
             </a>
-            <nav class=" inline-flex justify-center items-center">
-                <ul class="flex items-center justify-center space-x-3 text-sm list-none">
-                    <li class=" group p-2 rounded-md hover:bg-white/5">
-                        <a href="#" class=" text-neutral-300 group-hover:text-white">Tentang Kami</a>
+            {{-- Desktop and tablet nav --}}
+            <div class=" hidden lg:block">
+                <nav class=" inline-flex justify-center items-center">
+                    <ul class="flex items-center justify-center space-x-3 text-sm list-none">
+                        <li class=" group p-2 rounded-md hover:bg-white/5">
+                            <a href="#" class=" text-neutral-300 group-hover:text-white">About Us</a>
+                        </li>
+                        {{-- layanan --}}
+                        <li class=" group p-2 rounded-md hover:bg-white/5">
+                            <a href="#" class=" text-neutral-300 group-hover:text-white">Portofolio</a>
+                        </li>
+                        <li class=" group p-2 rounded-md hover:bg-white/5">
+                            <a href="#" class=" text-neutral-300 group-hover:text-white">Pricelist</a>
+                        </li>
+                        {{-- testimoni --}}
+                        <li class=" group px-4 py-2 rounded-md hover:bg-white/5 border border-white/20">
+                            <a href="#" class=" text-neutral-300 group-hover:text-white">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+
+            {{-- Toggle mobile nav --}}
+            <button class=" block lg:hidden transition-all duration-200 ease-out z-50" @click="open = !open">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 16 16"
+                    x-show="open === false" x-cloak class="text-white">
+                    <path fill="currentColor" fill-rule="evenodd"
+                        d="M0 3.75A.75.75 0 0 1 .75 3h14.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 3.75M0 8a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H.75A.75.75 0 0 1 0 8m.75 3.5a.75.75 0 0 0 0 1.5h14.5a.75.75 0 0 0 0-1.5z"
+                        clip-rule="evenodd" />
+                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                    x-show="open === true" x-cloak class="text-white">
+                    <path fill="currentColor"
+                        d="m12 13.4l-4.9 4.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.9-4.9l-4.9-4.9q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l4.9 4.9l4.9-4.9q.275-.275.7-.275t.7.275t.275.7t-.275.7L13.4 12l4.9 4.9q.275.275.275.7t-.275.7t-.7.275t-.7-.275z" />
+                </svg>
+
+            </button>
+        </div>
+        {{-- Mobile nav --}}
+        <div id="mobile-nav"
+            class="block lg:hidden fixed right-0 top-[87px] h-screen w-64 bg-neutral-900/95 backdrop-blur-sm z-50 transform transition-transform duration-300 ease-in-out"
+            :class="open ? 'translate-x-0' : 'translate-x-full'" x-show="open === true || true"
+            x-transition:enter="transition ease-in-out duration-300" x-transition:enter-start="translate-x-full"
+            x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in-out duration-300"
+            x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
+            <nav class="flex flex-col h-full pt-5 px-6">
+                <ul class="flex flex-col items-start justify-start space-y-3 text-sm list-none w-full">
+                    <li class="group p-2 rounded-md hover:bg-white/5 w-full text-left">
+                        <a href="#" class="text-neutral-300 group-hover:text-white">About Us</a>
                     </li>
                     {{-- layanan --}}
-                    <li class=" group p-2 rounded-md hover:bg-white/5">
-                        <a href="#" class=" text-neutral-300 group-hover:text-white">Portofolio</a>
+                    <li class="group p-2 rounded-md hover:bg-white/5 w-full text-left">
+                        <a href="#" class="text-neutral-300 group-hover:text-white">Portofolio</a>
                     </li>
-                    <li class=" group p-2 rounded-md hover:bg-white/5">
-                        <a href="#" class=" text-neutral-300 group-hover:text-white">Harga</a>
+                    <li class="group p-2 rounded-md hover:bg-white/5 w-full text-left">
+                        <a href="#" class="text-neutral-300 group-hover:text-white">Pricelist</a>
                     </li>
                     {{-- testimoni --}}
-                    <li class=" group px-4 py-2 rounded-md hover:bg-white/5 border border-white/20">
-                        <a href="#" class=" text-neutral-300 group-hover:text-white">Kontak</a>
+                    <li class="group px-4 py-2 rounded-md hover:bg-white/5 border border-white/20 w-full text-left">
+                        <a href="#" class="text-neutral-300 group-hover:text-white">Contact</a>
                     </li>
                 </ul>
             </nav>
@@ -62,7 +108,7 @@
                     class="rounded-md bg-white text-black px-6 py-3 text-sm font-semibold w-full sm:w-auto max-w-sm
           hover:bg-neutral-200 group inline-flex items-center justify-center gap-0 group-hover:gap-2
           transition-all duration-200 ease-out">
-                    <span>Lihat Portofolio Kami</span>
+                    <span>View Our Portofolio</span>
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 15 15"
                         class="w-0 opacity-0 group-hover:w-3 group-hover:opacity-100 group-hover:ml-3 transition-all duration-200 ease-out overflow-visible">
@@ -76,8 +122,8 @@
         <div id="float-btn" class=" fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3">
             {{-- Link ke wa --}}
             <a
-                class=" px-4 py-2 bg-white text-black font-semibold text-sm rounded-tl-md rounded-tr-md rounded-bl-md inline-block  shadow-sm">Gratis
-                Konsultasi Online 🙌
+                class=" px-4 py-2 bg-white text-black font-semibold text-sm rounded-tl-md rounded-tr-md rounded-bl-md inline-block  shadow-sm">Free
+                Online Consultation 🙌
             </a>
             {{-- Link ke wa --}}
             <a href="">
