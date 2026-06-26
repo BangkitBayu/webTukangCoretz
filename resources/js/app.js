@@ -4,9 +4,20 @@ import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
-const apiUrl = "http://localhost:8000/";
+const apiUrl = "http://localhost/";
 
 document.addEventListener("alpine:init", () => {
+    Alpine.store("testimonials", {
+        formData: {
+            id: null,
+            name: "",
+            position: "",
+            comment: "",
+            rating: "",
+            isShow: 0,
+        },
+    });
+
     Alpine.store("categories", {
         collection: [],
         collectionWithCount: [],

@@ -17,13 +17,23 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <style>
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #374151 #f3f4f6;
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
 
 <body class=" font-[Montserrat] antialiased box-border bg-zinc-950 relative">
     {{-- Page header --}}
-    <header class=" relative  top-0  z-50 w-full" x-data="{ open: false }">
-        <div
-            class=" fixed flex items-center justify-between px-3 w-full bg-neutral-900/95 backdrop-blur-sm  lg:bg-transparent">
+    <header class=" relative  top-0  z-50 w-full transition-all duration-300 ease-in-out" x-data="{ open: false, screenY : 0}" x-init="window.addEventListener('scroll' , () => {
+    screenY = window.scrollY;})">
+        <div x-cloak :class="screenY >= 90 ? 'lg:bg-neutral-900/95 lg:backdrop-blur-sm' : 'lg:bg-transparent'"
+            class=" fixed flex items-center justify-between px-3 w-full bg-neutral-900/95 backdrop-blur-sm  
+            ">
             <a href="{{ route('index') }}">
                 <div class=" inline-flex items-center justify-center">
                     <x-application-logo class=" w-20 h-20 m-0 p-0"></x-application-logo>
@@ -35,7 +45,7 @@
                 <nav class=" inline-flex justify-center items-center">
                     <ul class="flex items-center justify-center space-x-3 text-sm list-none">
                         <li class=" group p-2 rounded-md hover:bg-white/5">
-                            <a href="#" class=" text-neutral-300 group-hover:text-white">About Us</a>
+                            <a href="#about-us" class=" text-neutral-300 group-hover:text-white">About Us</a>
                         </li>
                         {{-- layanan --}}
                         <li class=" group p-2 rounded-md hover:bg-white/5">
@@ -78,7 +88,7 @@
             <nav class="flex flex-col h-full pt-5 px-6">
                 <ul class="flex flex-col items-start justify-start space-y-3 text-sm list-none w-full">
                     <li class="group p-2 rounded-md hover:bg-white/5 w-full text-left">
-                        <a href="#" class="text-neutral-300 group-hover:text-white">About Us</a>
+                        <a href="#about-us" class="text-neutral-300 group-hover:text-white">About Us</a>
                     </li>
                     {{-- layanan --}}
                     <li class="group p-2 rounded-md hover:bg-white/5 w-full text-left">
@@ -119,6 +129,7 @@
             </div>
         </section>
 
+        {{-- Float wa button --}}
         <div id="float-btn" class=" fixed bottom-8 right-8 z-50 flex flex-col items-end gap-3">
             {{-- Link ke wa --}}
             <a
@@ -136,6 +147,17 @@
                 </button>
             </a>
         </div>
+
+        <section id="about-us">
+            <div class=" min-h-screen flex items-center justify-center px-4 py-16 mx-auto">
+                <div>
+                    <img src="{{ asset('images/logo.webp') }}" alt="logo">
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </section>
     </main>
     <footer></footer>
 </body>
