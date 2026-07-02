@@ -13,4 +13,9 @@ class Testimonial extends Model
         'rating',
         'is_visible'
     ];
+
+    public function scopeVisible($query)
+    {
+        return $query->where('is_visible', 1);
+    }
 }

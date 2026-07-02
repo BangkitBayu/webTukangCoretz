@@ -253,10 +253,10 @@
                         <div class=" flex flex-col justify-start mb-2 w-full ">
                             <x-input-label :value="__('Pekerjaan')"
                                 class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
-                            <x-text-input id="position" name="position" class=" w-full"
+                            <x-text-input id="occupation" name="occupation" class=" w-full"
                                 placeholder="mis. Owner Coffe Shop" required x-model=""></x-text-input>
 
-                            @error('position')
+                            @error('occupation')
                                 <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
                             @enderror
                         </div>
@@ -264,11 +264,11 @@
                     <div class=" flex flex-col justify-start mb-2 w-full px-6">
                         <x-input-label :value="__('Testimoni')"
                             class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
-                        <x-textarea class=" mb-1" id="comment" name="comment"
+                        <x-textarea class=" mb-1" id="feedback" name="feedback"
                             placeholder="Masukkan testimoni pelanggan" x-model="" required
                             maxlength="300"></x-textarea>
                         <p class=" text-sm text-gray-500">Maksimal 300 karakter</p>
-                        @error('comment')
+                        @error('feedback')
                             <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
@@ -300,13 +300,13 @@
 
                                 <template x-if="isEdit">
 
-                                    <input type="checkbox" class="sr-only peer" name="isShow"
-                                        {{ (int) $data->isShow === 1 ? 'checked' : '' }} />
+                                    <input type="checkbox" class="sr-only peer" name="is_visible"
+                                        {{ (int) $data->is_visible === 1 ? 'checked' : '' }} />
                                 </template>
 
                                 <template x-if="!isEdit">
 
-                                    <input type="checkbox" class="sr-only peer" name="isShow" value="1"
+                                    <input type="checkbox" class="sr-only peer" name="is_visible" value="1"
                                         checked />
                                 </template>
 
@@ -317,7 +317,7 @@
                                     class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-6"></span>
                             </label>
 
-                            @error('isShow')
+                            @error('is_visible')
                                 <p class="text-sm text-red-400">{{ $message }}</p>
                             @enderror
                         </div>

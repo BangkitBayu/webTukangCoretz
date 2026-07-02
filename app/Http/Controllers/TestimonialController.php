@@ -2,15 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\TestimonialLimitExceededException;
 use App\Http\Requests\testimonial\storeTestimonialRequest;
 use App\Http\Requests\testimonial\updateTestimonialRequest;
 use App\Models\Testimonial;
+use App\Services\TestimonialService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
 {
+    public function __construct(private TestimonialService $testimonialService) {}
 
     /**
      * To get count active testimonial
@@ -45,11 +48,10 @@ class TestimonialController extends Controller
     public function index()
     {
         $pageName = "Testimonial";
-        // $testimonials = Testimonial::all(['id', 'name', 'position', 'comment', 'rating', 'isShow']);
         $testimonials = Testimonial::latest('created_at')->paginate(20);
         $testimonials_count = Testimonial::count();
-        $active_testimonials_count = Testimonial::where('isShow' , 1)->count();
-        return view('testimonial', compact('pageName', 'testimonials' , 'testimonials_count' , 'active_testimonials_count'));
+        $active_testimonials_count = Testimonial::visible()->count();
+        return view('testimonial', compact('pageName', 'testimonials', 'testimonials_count', 'active_testimonials_count'));
     }
 
     /**
@@ -65,15 +67,16 @@ class TestimonialController extends Controller
      */
     public function store(storeTestimonialRequest $request): RedirectResponse
     {
-        $request->validated();
 
-        if ($request->isShow == 1 && $this->getCountActiveTestimonials() === 10) {
-            return back()->with('error', 'You have reached the total limit of testimonials displayed.');
+        $payload =  $request->validated();
+
+        try {
+            $this->testimonialService->store($payload);
+
+            return back()->with('success', 'Testimoni ' . $payload['name'] . ' berhasil ditambahkan.');
+        } catch (TestimonialLimitExceededException $e) {
+            return back()->with('error', $e->getMessage());
         }
-
-        Testimonial::create($request->all());
-
-        return back()->with('success', 'New data has been successfully saved.');
     }
 
     /**

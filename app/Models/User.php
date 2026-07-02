@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 // class User extends Authenticatable implements MustVerifyEmail
+// Must verify email digunakan untuk mengaktifkan fitur verifikasi email
 class User extends Authenticatable 
 {
     /** @use HasFactory<UserFactory> */
