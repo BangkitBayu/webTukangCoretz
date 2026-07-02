@@ -46,8 +46,10 @@ class TestimonialController extends Controller
     {
         $pageName = "Testimonial";
         // $testimonials = Testimonial::all(['id', 'name', 'position', 'comment', 'rating', 'isShow']);
-        $testimonials = Testimonial::latest('created_at')->paginate(10);
-        return view('testimonial', compact('pageName', 'testimonials'));
+        $testimonials = Testimonial::latest('created_at')->paginate(20);
+        $testimonials_count = Testimonial::count();
+        $active_testimonials_count = Testimonial::where('isShow' , 1)->count();
+        return view('testimonial', compact('pageName', 'testimonials' , 'testimonials_count' , 'active_testimonials_count'));
     }
 
     /**
