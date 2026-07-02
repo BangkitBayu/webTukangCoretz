@@ -7,16 +7,6 @@ window.Alpine = Alpine;
 const apiUrl = "http://localhost/";
 
 document.addEventListener("alpine:init", () => {
-    Alpine.store("testimonials", {
-        formData: {
-            id: null,
-            name: "",
-            position: "",
-            comment: "",
-            rating: "",
-            isShow: 0,
-        },
-    });
 
     Alpine.store("categories", {
         collection: [],

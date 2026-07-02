@@ -6,7 +6,7 @@
         </h2>
 
     </x-slot>
-    <div class="py-12 relative" x-data="{ isEdit: false, isLoading: false }">
+    <div class="py-12 relative" x-data="testimonialForm">
         @if (session('success'))
             <x-alert :status="__('success')" :message="session('success')" x-transition></x-alert>
         @elseif (session('error'))
@@ -107,7 +107,7 @@
                             </tr>
                         @else
                             @foreach ($testimonials as $data)
-                                <tr :id="$data->id"
+                                <tr id="{{ $data->id }}"
                                     class="text-sm text-white/80 text-center border-b border-white/10">
                                     <td class="px-4 py-2 align-middle">
                                         <div class="flex items-center justify-start">
@@ -165,8 +165,9 @@
                                     <td class="p-2 align-middle">
                                         <div class=" flex items-center justify-center ">
 
-                                            <button id="editBtn" type="submit" x-data
-                                                @click="$store.formTestimonial.openFormEdit({{ $data->id }})"
+                                            {{-- Edit testimonial button --}}
+                                            <button id="editBtn" type="submit"
+                                                @click="$dispatch('open-modal' , 'testimonial-modal'), isEdit=true, fetchAndEdit({{ $data->id }})"
                                                 class=" bg-transparent hover:bg-slate-800 transition-colors duration-200 p-3 rounded-md">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 24 24">
@@ -232,19 +233,21 @@
             <x-slot:content>
                 <form
                     :action="isEdit ?
-                        '{{ route('testimonial.update', ['id' => 'ID']) }}'.replace('ID', $store.categories.formData
-                            .id) :
+                        '{{ route('testimonial.update', ['id' => 'ID']) }}'.replace('ID', form.id) :
                         '{{ route('testimonial.store') }}'"
                     class=" flex flex-col overflow-y-auto h-60 py-3" @submit="isLoading = true" id="testimonial-form"
                     method="POST">
                     @csrf
+
+                    <input type="hidden" name="_method" :value="isEdit ? 'PUT' : 'POST'">
+
 
                     <div class=" flex flex-col items-center justify-center md:flex-row px-6 mb-2">
                         <div class=" flex flex-col justify-start mb-2 w-full md:mr-2">
                             <x-input-label :value="__('Nama Pelanggan')"
                                 class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
                             <x-text-input id="name" name="name" class=" w-full" placeholder="mis. John Doe"
-                                autofocus required x-model=""></x-text-input>
+                                autofocus required x-model="form.name"></x-text-input>
 
                             @error('name')
                                 <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
@@ -254,7 +257,7 @@
                             <x-input-label :value="__('Pekerjaan')"
                                 class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
                             <x-text-input id="occupation" name="occupation" class=" w-full"
-                                placeholder="mis. Owner Coffe Shop" required x-model=""></x-text-input>
+                                placeholder="mis. Owner Coffe Shop" required x-model="form.occupation"></x-text-input>
 
                             @error('occupation')
                                 <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
@@ -265,7 +268,7 @@
                         <x-input-label :value="__('Testimoni')"
                             class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
                         <x-textarea class=" mb-1" id="feedback" name="feedback"
-                            placeholder="Masukkan testimoni pelanggan" x-model="" required
+                            placeholder="Masukkan testimoni pelanggan" required x-model="form.feedback"
                             maxlength="300"></x-textarea>
                         <p class=" text-sm text-gray-500">Maksimal 300 karakter</p>
                         @error('feedback')
@@ -279,7 +282,7 @@
                         <div class="star-rating flex items-center justify-start gap-1">
                             @for ($i = 0; $i < 5; $i++)
                                 <input type="radio" name="rating" id="star{{ $i + 1 }}"
-                                    value="{{ $i + 1 }}">
+                                    value="{{ $i + 1 }}" x-model="form.rating">
                                 <x-rating.star filled="true" class=" text-xl"></x-rating.star>
                             @endfor
                         </div>
@@ -301,7 +304,7 @@
                                 <template x-if="isEdit">
 
                                     <input type="checkbox" class="sr-only peer" name="is_visible"
-                                        {{ (int) $data->is_visible === 1 ? 'checked' : '' }} />
+                                        :checked="form.is_visible == 1" />
                                 </template>
 
                                 <template x-if="!isEdit">
@@ -332,12 +335,12 @@
                     <x-primary-button type="button"
                         class=" w-full bg-white hover:bg-gray-50 border border-gray-100 shadow-sm  md:w-auto transition-colors duration-200 ease-in-out">
                         <p class=" text-black text-sm font-bold text-center"
-                            @click="$dispatch('close-modal' , 'testimonial-modal')">
+                            @click="$dispatch('close-modal' , 'testimonial-modal'),  resetForm()">
                             Batal</p>
                     </x-primary-button>
 
-                    <x-primary-button
-                        class=" mb-2 ml-0 md:mb-0 md:ml-2 w-full !bg-black hover:!bg-gray-800 md:w-auto transition-colors duration-200 ease-in-out"
+                    <x-primary-button :class="{ '!bg-gray-700': isLoading, '!bg-black hover:!bg-gray-800': !isLoading }"
+                        class=" mb-2 ml-0 md:mb-0 md:ml-2 w-full !bg-black hover:!bg-gray-800  md:w-auto transition-colors duration-200 ease-in-out"
                         x-bind:disabled="isLoading" form="testimonial-form">
                         <template x-if="isLoading">
                             <div class="flex items-center justify-center">
@@ -357,4 +360,55 @@
 
 
     </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('testimonialForm', () => ({
+                isEdit: false,
+                isLoading: false,
+
+                // State utama form dikelompokkan di sini
+                form: {
+                    id: null,
+                    name: '',
+                    occupation: '',
+                    feedback: '',
+                    rating: 1,
+                    is_visible: 1
+                },
+
+                // Mengambil data dari server saat Edit
+                async fetchAndEdit(id) {
+                    this.isLoading = true;
+                    this.isEdit = true;
+                    try {
+                        const response = await fetch(`/testimonial/${id}`);
+                        if (!response.ok) throw new Error('Gagal mengambil data');
+
+                        const res = await response.json();
+                        this.form = res.data; // Isi state form otomatis
+                        // console.log(this.form)
+                    } catch (error) {
+                        console.error(error.message);
+                        this.resetForm();
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+
+                // Reset form ke kondisi semula (Tambah Data)
+                resetForm() {
+                    this.isEdit = false;
+                    this.form = {
+                        id: null,
+                        name: '',
+                        occupation: '',
+                        feedback: '',
+                        rating: 1,
+                        is_visible: 1
+                    };
+                }
+            }));
+        });
+    </script>
 </x-app-layout>

@@ -11,6 +11,7 @@ class TestimonialService
 {
     private const MAX_VISIBLE_TESTIMONIALS = 25;
 
+    // Menyimpan testimonial baru ke database
     public function store(array $data): Testimonial
     {
 
@@ -25,6 +26,17 @@ class TestimonialService
             'rating' => $data['rating'],
             'is_visible' => $data['is_visible']
         ]);
+    }
+
+    // Mengambil testimonial berdasarkan ID
+    public function getTestimonialById(string $id): Testimonial {
+        $testimonial = Testimonial::find($id);
+
+        if(!$testimonial) {
+            throw new Exception("Testimonial not found." , 404);
+        }
+
+        return $testimonial;
     }
 
     // Mengembalikan nilai true or false untuk mengecek apakah testimonial terlihat melebihi batas

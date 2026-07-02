@@ -7,6 +7,7 @@ use App\Http\Requests\testimonial\storeTestimonialRequest;
 use App\Http\Requests\testimonial\updateTestimonialRequest;
 use App\Models\Testimonial;
 use App\Services\TestimonialService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -80,21 +81,16 @@ class TestimonialController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id): JsonResponse
     {
-        $testimonial = Testimonial::findOrFail($id);
-
-        return response()->json($testimonial, 200);
+        try {
+            $testimonial = $this->testimonialService->getTestimonialById($id);
+            return response()->json(['message' => 'Testimonial successfully taken' , 'data' => $testimonial], 200);
+        } catch( Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
     /**
