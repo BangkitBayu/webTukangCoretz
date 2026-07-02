@@ -119,10 +119,10 @@
                                         </div>
                                     </td>
                                     <td class=" py-2 text-left">
-                                        {{ $data->position }}
+                                        {{ $data->occupation }}
                                     </td>
                                     <td class=" py-2 whitespace-normal text-left">
-                                        {{ $data->comment }}
+                                        {{ $data->feedback }}
                                     </td>
                                     <td class=" py-2 align-middle">
                                         <div class="flex items-center justify-start">
@@ -152,7 +152,7 @@
                                             <label
                                                 class="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
                                                 <input type="checkbox" class="sr-only peer" name="isShow"
-                                                    {{ (int) $data->isShow === 1 ? 'checked' : '' }}
+                                                    {{ (int) $data->is_visible === 1 ? 'checked' : '' }}
                                                     @change="$refs.formChangeStatus.submit()" />
                                                 <div
                                                     class="w-12 h-6 bg-white rounded-full peer peer-checked:bg-white transition-colors duration-200">
