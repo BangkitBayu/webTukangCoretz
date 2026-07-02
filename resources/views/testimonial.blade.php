@@ -79,19 +79,19 @@
                             <x-table-head class=" px-4 py-2 text-left">
                                 Pelanggan
                             </x-table-head>
-                            <x-table-head class=" py-2 text-left">
+                            <x-table-head class=" py-2 px-2 text-left">
                                 Pekerjaan
                             </x-table-head>
-                            <x-table-head class=" py-2 text-left">
+                            <x-table-head class=" py-2 px-2 text-left">
                                 Testimoni
                             </x-table-head>
-                            <x-table-head class=" py-2 text-left">
+                            <x-table-head class=" py-2 px-2 text-left">
                                 Rating
                             </x-table-head>
-                            <x-table-head class=" py-2 text-left">
+                            <x-table-head class=" py-2 px-2 text-left">
                                 Ditampilkan?
                             </x-table-head>
-                            <x-table-head class=" py-2 text-center">
+                            <x-table-head class=" py-2 px-2 text-center">
                                 Aksi
                             </x-table-head>
                         </tr>
@@ -118,13 +118,13 @@
                                             <p class=" text-white">{{ $data->name }}</p>
                                         </div>
                                     </td>
-                                    <td class=" py-2 text-left">
+                                    <td class=" py-2 px-2 text-left">
                                         {{ $data->occupation }}
                                     </td>
-                                    <td class=" py-2 whitespace-normal text-left">
+                                    <td class=" py-2 px-2 whitespace-normal text-left">
                                         {{ $data->feedback }}
                                     </td>
-                                    <td class=" py-2 align-middle">
+                                    <td class=" py-2 px-2 align-middle">
                                         <div class="flex items-center justify-start">
                                             @if ($data->rating === 0)
                                                 <p>Belum ada rating</p>
@@ -163,7 +163,7 @@
                                         </form>
                                     </td>
                                     <td class="p-2 align-middle">
-                                        <div class=" flex items-center justify-center lg:flex-row flex-col">
+                                        <div class=" flex items-center justify-center ">
 
                                             <button id="editBtn" type="submit" x-data
                                                 @click="$store.formTestimonial.openFormEdit({{ $data->id }})"
