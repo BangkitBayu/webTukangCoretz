@@ -144,15 +144,15 @@
                                     </td>
                                     <td class="p-2 align-middle">
                                         <form x-data x-ref="formChangeStatus"
-                                            action="{{ route('testimonial.active-status', ['id' => $data->id]) }}"
+                                            action="{{ route('testimonial.update-visibility', ['id' => $data->id]) }}"
                                             method="POST" class="flex flex-wrap items-center justify-start">
                                             @csrf
 
-                                            <input type="hidden" name="_method" value="PUT">
+                                            @method('PATCH')
                                             <label
                                                 class="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
-                                                <input type="checkbox" class="sr-only peer" name="isShow"
-                                                    {{ (int) $data->is_visible === 1 ? 'checked' : '' }}
+                                                <input type="checkbox" class="sr-only peer" name="is_visible"
+                                                    value="1" {{ (int) $data->is_visible === 1 ? 'checked' : '' }}
                                                     @change="$refs.formChangeStatus.submit()" />
                                                 <div
                                                     class="w-12 h-6 bg-white rounded-full peer peer-checked:bg-white transition-colors duration-200">
@@ -301,17 +301,8 @@
 
                             <label class="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
 
-                                <template x-if="isEdit">
-
-                                    <input type="checkbox" class="sr-only peer" name="is_visible"
-                                        :checked="form.is_visible == 1" />
-                                </template>
-
-                                <template x-if="!isEdit">
-
-                                    <input type="checkbox" class="sr-only peer" name="is_visible" value="1"
-                                        checked />
-                                </template>
+                                <input type="checkbox" class="sr-only peer" name="is_visible" value="1"
+                                    :checked="form.is_visible == 1" />
 
                                 <div
                                     class="w-12 h-6 bg-black rounded-full peer peer-checked:bg-black transition-colors duration-200">

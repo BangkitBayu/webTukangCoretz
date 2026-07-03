@@ -23,7 +23,7 @@ class updateTestimonialRequest extends FormRequest
         $this->merge(
             [
                 'rating' => (int) $this->rating,
-                'isShow' => (int) $this->isShow,
+                'is_visible' => (int) $this->is_visible,
             ]
         );
     }
@@ -37,21 +37,38 @@ class updateTestimonialRequest extends FormRequest
     {
         return [
             'name' => ['required', "regex:/^([A-Z][A-Za-z\-']*)(\s[A-Za-z][A-Za-z\-']*)*$/", 'max:255'],
-            'position' => ['required', 'max:255'],
-            'comment' => ['required'],
-            'rating' => ['required', 'integer', function (string $attribute, mixed $value, \Closure $fail) {
-                if ($value < 0) {
-                    $fail("The rating field must be at least 0.");
-                }
-            }, 'max:5'],
-            'isShow' => ['required', 'integer', 'in:0,1']
+            'occupation' => ['required', 'max:255'],
+            'feedback' => ['required', 'max:300'],
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'is_visible' => ['required', 'integer', 'in:0,1']
+        ];
+    }
+
+    #[Override]
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama pelanggan harus diisi.',
+            'name.regex' => 'Nama harus diawali huruf kapital dan dipisahkan dengan spasi.',
+            'name.max' => 'Panjang nama pelanggan maksimal 255 karakter.',
+
+            'occupation.required' => 'Pekerjaan harus diisi.',
+            'occupation.max' => 'Panjang nama pekerjaan maksimal 255 karakter.',
+
+            'feedback.required' => 'Testimoni pelanggan harus diisi.',
+            'feedback.max' => 'Panjang testimoni maksimal 300 karakter.',
+
+            'rating.required' => 'Rating harus diisi',
+            'rating.integer' => 'Rating invalid',
+            'rating.min' => 'Rating minimal adalah 1',
+            'rating.max' => 'Rating maksimal adalah 5',
         ];
     }
 
     #[Override]
     protected function failedValidation(Validator $validator)
     {
-        session()->flash('error', 'Failed to update data, please check your form and try again!');
+        session()->flash('error', 'Gagal menyimpan data, silahkan cek data dan coba lagi!');
         return parent::failedValidation($validator);
     }
 }

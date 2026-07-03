@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/testimonial', [TestimonialController::class, 'store'])->name('testimonial.store');
     Route::get('/testimonial/{id}', [TestimonialController::class, 'edit'])->name('testimonial.edit');
     Route::put('/testimonial/{id}', [TestimonialController::class, 'update'])->name('testimonial.update');
-    Route::put('/testimonial/{id}/active-status', [TestimonialController::class, 'updateActiveStatusTestimonial'])->name('testimonial.active-status');
+    Route::patch('/testimonial/{id}/visibility', [TestimonialController::class, 'updateVisibility'])->name('testimonial.update-visibility');
     Route::delete('/testimonial/{id}', [TestimonialController::class, 'destroy'])->name('testimonial.destroy');
     // Route projects
     Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
