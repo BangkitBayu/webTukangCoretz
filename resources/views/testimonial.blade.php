@@ -116,7 +116,7 @@
                         @else
                             @foreach ($testimonials as $data)
                                 <tr id="{{ $data->id }}"
-                                    class="text-sm text-white/80 text-center border-b border-white/10">
+                                    class="text-sm text-white/80 text-center border-b border-gray-700">
                                     <td class="px-4 py-2 align-middle">
                                         <div class="flex items-center justify-start">
                                             <div
@@ -189,7 +189,7 @@
                                             {{-- Delete testimonial form --}}
                                             <x-primary-button id="deleteBtn" type="button"
                                                 @click="$dispatch('open-modal' , 'confirm-delete'), fetchTestimonialById({{ $data->id }})"
-                                                class=" bg-transparent hover:!bg-slate-800 transition-colors duration-200 p-3 rounded-md lg:ml-3 lg:mt-0 mt-2">
+                                                class=" bg-transparent hover:!bg-slate-800 transition-colors duration-200 p-3 rounded-md lg:ml-3 lg:mt-0 ">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 512 512">
                                                     <path fill="none" stroke="currentColor" stroke-linecap="round"
