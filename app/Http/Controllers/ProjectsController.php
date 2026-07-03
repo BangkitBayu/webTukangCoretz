@@ -6,12 +6,15 @@ use App\Http\Requests\project\storeProjectRequest;
 use App\Http\Requests\project\updateProjectRequest;
 use App\Models\CategoryProject;
 use App\Models\Project;
+use App\Services\ProjectService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
+    public function __construct(private ProjectService $projectService) {}
     /**
      * Display a listing of the resource.
      */
@@ -32,14 +35,12 @@ class ProjectsController extends Controller
     {
         $payload = $request->validated();
 
-        // dd($payload);
-
-        unset($payload['thumbnail']);
-        $project = Project::create($payload);
-
-        $project->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
-
-        return back()->with('success', 'New data has been successfully saved.');
+        try {
+            $this->projectService->store($payload);
+            return back()->with('success', 'Proyek ' . $payload['name'] . ' berhasil ditambahkan.');
+        } catch (Exception $e) {
+            return back()->with('error', 'Gagal menambahkan proyek, silahkan cek data dan coba lagi!');
+        }
     }
 
     /**
