@@ -71,8 +71,8 @@
                     </x-stats.stats-card>
                 </x-slot:content>
             </x-stats.stats-overview>
-            <div class=" relative w-full overflow-x-auto py-4 border border-gray-700 rounded-md">
-                <x-table>
+            <div class="  w-full overflow-x-auto border-t border-x border-gray-700 rounded-md">
+                <x-table class=" border-b border-gray-700 py-4">
                     <x-slot name="tableHead">
 
                         <tr>
@@ -100,9 +100,17 @@
                     <x-slot name="tableBody">
                         @if ($testimonials->isEmpty())
                             <tr>
-                                <td colspan="8">
-                                    <p class=" text-sm text-white/80 font-thin text-center my-2">Ups, data not
-                                        available</p>
+                                <td colspan="8" class=" py-8">
+                                    <div class=" flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            class="mr-2 text-red-500" viewBox="0 0 24 24">
+                                            <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                                stroke-linejoin="round" stroke-width="1.5"
+                                                d="M12 8v4m0 4.01l.01-.011M9 3H4v3m0 5v2m16-2v2M15 3h5v3M9 21H4v-3m11 3h5v-3" />
+                                        </svg>
+                                        <p class=" text-sm text-gray-200 font-thin text-center">Testimoni masih kosong,
+                                            silahkan tambah testimoni baru!</p>
+                                    </div>
                                 </td>
                             </tr>
                         @else
@@ -166,9 +174,9 @@
                                         <div class=" flex items-center justify-center ">
 
                                             {{-- Edit testimonial button --}}
-                                            <button id="editBtn" type="submit"
-                                                @click="$dispatch('open-modal' , 'testimonial-modal'), isEdit=true, fetchAndEdit({{ $data->id }})"
-                                                class=" bg-transparent hover:bg-slate-800 transition-colors duration-200 p-3 rounded-md">
+                                            <x-primary-button id="editBtn" type="button"
+                                                @click="$dispatch('open-modal' , 'testimonial-modal'), isEdit=true, fetchTestimonialById({{ $data->id }})"
+                                                class=" bg-transparent hover:!bg-slate-800 transition-colors duration-200 p-3 rounded-md">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 24 24">
                                                     <path fill="currentColor" fill-rule="evenodd"
@@ -176,34 +184,84 @@
                                                         clip-rule="evenodd" />
                                                 </svg>
 
-                                            </button>
+                                            </x-primary-button>
 
+                                            {{-- Delete testimonial form --}}
+                                            <x-primary-button id="deleteBtn" type="button"
+                                                @click="$dispatch('open-modal' , 'confirm-delete'), fetchTestimonialById({{ $data->id }})"
+                                                class=" bg-transparent hover:!bg-slate-800 transition-colors duration-200 p-3 rounded-md lg:ml-3 lg:mt-0 mt-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                    viewBox="0 0 512 512">
+                                                    <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="32"
+                                                        d="m112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" />
+                                                    <path fill="currentColor" stroke="currentColor"
+                                                        stroke-linecap="round" stroke-miterlimit="10"
+                                                        stroke-width="32" d="M80 112h352" />
+                                                    <path fill="none" stroke="currentColor" stroke-linecap="round"
+                                                        stroke-linejoin="round" stroke-width="32"
+                                                        d="M192 112V72h0a23.93 23.93 0 0 1 24-24h80a23.93 23.93 0 0 1 24 24h0v40m-64 64v224m-72-224l8 224m136-224l-8 224" />
+                                                </svg>
 
-                                            <form x-data
-                                                action="{{ route('testimonial.destroy', ['id' => $data->id]) }}"
-                                                method="POST">
-                                                @csrf
-                                                <input type="hidden" name="_method" value="DELETE">
-                                                <button id="deleteBtn" type="submit"
-                                                    class=" bg-transparent hover:bg-slate-800 transition-colors duration-200 p-3 rounded-md lg:ml-3 lg:mt-0 mt-2">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18"
-                                                        height="18" viewBox="0 0 512 512">
-                                                        <path fill="none" stroke="currentColor"
-                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="32"
-                                                            d="m112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" />
-                                                        <path fill="currentColor" stroke="currentColor"
-                                                            stroke-linecap="round" stroke-miterlimit="10"
-                                                            stroke-width="32" d="M80 112h352" />
-                                                        <path fill="none" stroke="currentColor"
-                                                            stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="32"
-                                                            d="M192 112V72h0a23.93 23.93 0 0 1 24-24h80a23.93 23.93 0 0 1 24 24h0v40m-64 64v224m-72-224l8 224m136-224l-8 224" />
-                                                    </svg>
+                                            </x-primary-button>
 
-                                                </button>
-                                            </form>
-                                            </a>
+                                            {{-- Confirm delete modal --}}
+                                            <x-modal name="confirm-delete" class=" bg-white">
+                                                <x-slot:header>
+                                                    <div
+                                                        class=" align-middle flex items-center justify-center md:justify-start px-6 py-3 border-b border-gray-200 ">
+                                                        <div class=" bg-red-600 text-red-200 rounded-full mr-3 p-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                                height="18" viewBox="0 0 24 24">
+                                                                <path fill="currentColor"
+                                                                    d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z" />
+                                                            </svg>
+                                                        </div>
+                                                        <h3 class=" text-lg text-black font-semibold text-center">
+                                                            Konfirmasi Hapus</h3>
+                                                    </div>
+                                                </x-slot:header>
+                                                <x-slot:content>
+                                                    <form :action='`/testimonial/${form.id}`' method="POST"
+                                                        class="p-3" @submit="isLoading = true"
+                                                        id="delete-testimonial">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <p class=" text-center text-sm text-gray-800">Apakah kamu yakin
+                                                            ingin menghapus testimoni
+                                                            <span class=" font-semibold" x-text="form.name"></span> ?
+                                                        </p>
+                                                    </form>
+                                                </x-slot:content>
+                                                <x-slot:footer>
+                                                    <div
+                                                        class=" flex flex-col-reverse items-center justify-center  md:justify-end md:flex-row px-6 py-3 border-t border-gray-200">
+                                                        <x-primary-button type="button"
+                                                            class=" w-full bg-white hover:bg-gray-50 border border-gray-100 shadow-sm  md:w-auto transition-colors duration-200 ease-in-out">
+                                                            <p class=" text-black text-sm font-bold text-center"
+                                                                @click="$dispatch('close-modal' , 'confirm-delete'), resetForm()">
+                                                                Batal</p>
+                                                        </x-primary-button>
+
+                                                        <x-primary-button :class="{ '!bg-gray-700': isLoading, '!bg-black hover:!bg-gray-800': !isLoading }"
+                                                            class=" mb-2 ml-0 md:mb-0 md:ml-2 w-full !bg-black hover:!bg-gray-800  md:w-auto transition-colors duration-200 ease-in-out"
+                                                            x-bind:disabled="isLoading" form="delete-testimonial">
+                                                            <template x-if="isLoading">
+                                                                <div class="flex items-center justify-center">
+                                                                    <svg class="w-5 h-5 animate-spin border-4 rounded-full border-white/70 mr-3 border-t-transparent"
+                                                                        viewBox="0 0 24 24"></svg>
+                                                                    {{ __('Tunggu sebentar...') }}
+                                                                </div>
+                                                            </template>
+
+                                                            <template x-if="!isLoading">
+                                                                <p class=" text-white text-sm font-bold text-center">
+                                                                    Hapus Testimoni</p>
+                                                            </template>
+                                                        </x-primary-button>
+                                                    </div>
+                                                </x-slot:footer>
+                                            </x-modal>
                                         </div>
                                     </td>
                                 </tr>
@@ -368,8 +426,8 @@
                     is_visible: 1
                 },
 
-                // Mengambil data dari server saat Edit
-                async fetchAndEdit(id) {
+                // Mengambil data testimonial dari server berdasarkan id
+                async fetchTestimonialById(id) {
                     this.isLoading = true;
                     this.isEdit = true;
                     try {

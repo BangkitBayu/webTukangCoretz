@@ -78,4 +78,11 @@ class TestimonialService
 
         return $testimoni->save();
     }
+
+    // Menghapus testimonial berdasarkan Id
+    public function delete(string $id): bool {
+        $testimonial = $this->getTestimonialById($id);
+
+        return $testimonial->delete();
+    }
 }
