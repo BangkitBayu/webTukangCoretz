@@ -7,7 +7,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-12 relative" x-data>
+    <div class="py-12 relative" x-data="project">
 
         @if (session('success'))
             <x-alert :status="__('success')" :message="session('success')" x-transition></x-alert>
@@ -15,9 +15,10 @@
             <x-alert :status="__('error')" :message="session('error')" x-transition></x-alert>
         @endif
 
-        <div class="max-w-7xl mx-auto px-3 lg:px-8 flex flex-col items-center justify-center" x-data="$store.categories.collection = @js($categories)">
-            <x-primary-button class=" flex items-center justify-center self-end bg-white hover:bg-white/80"
-                @click="$store.formProject.toggle()">
+        <div class="max-w-7xl mx-auto px-3 lg:px-8 flex flex-col items-center justify-center" x-data="categories = @js($categories)">
+            <x-primary-button id="new-project-btn"
+                class=" flex items-center justify-center self-end bg-white hover:bg-white/80"
+                @click="$dispatch('open-modal' , 'project-modal')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                     class=" text-black">
                     <path fill="currentColor"
@@ -109,8 +110,8 @@
                         @else
                             @foreach ($projects as $data)
                                 <tr id="{{ $data->id }}" class="  border-t border-gray-700 text-gray-400 text-sm">
-                                    <td class="p-4 align-middle whitespace-nowrap">
-                                        <div class="flex items-center justify-start gap-3">
+                                    <td class="p-4 align-middle">
+                                        <div class="flex  items-center justify-start gap-3">
                                             @if ($data->hasMedia('thumbnail'))
                                                 <img src="{{ $data->getFirstMediaUrl('thumbnail', 'webp') }}"
                                                     alt="{{ $data->name }}"
@@ -119,7 +120,7 @@
 
                                             <div class="flex flex-col items-start justify-center">
                                                 <h3 class="text-lg font-semibold text-white">{{ $data->name }}</h3>
-                                                <p class=" text-sm">{{ $data->description }}</p>
+                                                <p class=" text-sm max-w-lg">{{ $data->description }}</p>
                                             </div>
                                         </div>
                                     </td>
@@ -201,8 +202,185 @@
             </div>
         </div>
 
-        <div x-data x-show="$store.formProject.openForm" x-transition>
-            <x-form-project :routeStore="route('projects.store')"></x-form-project>
-        </div>
+        {{-- project Modal --}}
+        <x-modal name="project-modal" maxWidth="lg" class=" bg-white h-auto">
+            <x-slot:header>
+                <div class=" align-middle px-6 py-3 border-b border-gray-200 ">
+                    <h3 class=" text-lg text-black text-center md:text-left  "
+                        x-text="isEdit ? 'Edit Proyek' : 'Tambah Proyek'">
+                    </h3>
+                    <h4 class=" text-sm text-gray-700 text-center md:text-left "
+                        x-text="isEdit ? 'Ubah data proyek yang ditampilkan.' : ' Tambah proyek baru untuk ditampilkan.'">
+                    </h4>
+                </div>
+            </x-slot>
+            <x-slot:content>
+                <form id="project-form"
+                    :action="isEdit ?
+                        '{{ route('projects.update', ['id' => 'ID']) }}'.replace('ID', form.id) :
+                        '{{ route('projects.store') }}'"
+                    class=" flex flex-col overflow-y-auto h-60 py-3" @submit="isLoading = true" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+
+                    <input type="hidden" name="_method" :value="isEdit ? 'PUT' : 'POST'">
+
+
+
+                    <div class=" flex flex-col justify-start px-6 mb-2 w-full">
+                        <x-input-label :value="__('Nama Proyek')"
+                            class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
+                        <x-text-input id="name" name="name" class=" w-full"
+                            placeholder="mis. Renovasi Restaurant Laris" autofocus required
+                            x-model="form.name"></x-text-input>
+
+                        @error('name')
+                            <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class=" flex flex-col justify-start mb-2 w-full px-6">
+                        <x-input-label :value="__('Deskripsi')"
+                            class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
+                        <x-textarea class=" mb-1" id="description" name="description"
+                            placeholder="Masukkan deskripsi singkat proyek...." required x-model="form.description"
+                            maxlength="300"></x-textarea>
+                        <p class=" text-sm text-gray-500">Maksimal 300 karakter</p>
+                        @error('description')
+                            <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="flex flex-col justify-start mb-2 w-full px-6 select-text">
+                        <x-input-label :value="__('Unggah foto proyek')"
+                            class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
+                        <x-upload-thumbnail></x-upload-thumbnail>
+                    </div>
+
+                    <div class=" flex flex-col justify-start mb-4 w-full px-6">
+                        <x-input-label :value="__('Kategori Proyek')"
+                            class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
+                        <x-select-input id="category" name="category_project_id" required x-model="">
+                            <option>Pilih kategori proyek</option>
+                            <template x-for="(value, index) in categories">
+                                <option :value="value.id" x-text="value.name"></option>
+                            </template>
+                        </x-select-input>
+
+                        @error('category_project_id')
+                            <p class="text-sm text-red-400 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class=" mb-2 w-full px-6">
+                        <div class="p-3 rounded-md border border-gray-300 flex items-center justify-between">
+                            <div class=" block">
+                                <x-input-label :value="__('Tampilkan di Website')"></x-input-label>
+                                <p class=" text-sm text-gray-500">Nonaktifkan untuk menyimpan tanpa menampilkan.</p>
+                            </div>
+
+                            <label class="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
+
+                                <input type="checkbox" class="sr-only peer" name="is_visible" value="1"
+                                    :checked="form.is_visible == 1" />
+
+                                <div
+                                    class="w-12 h-6 bg-black rounded-full peer peer-checked:bg-black transition-colors duration-200">
+                                </div>
+                                <span
+                                    class="dot absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out peer-checked:translate-x-6"></span>
+                            </label>
+
+                            @error('is_visible')
+                                <p class="text-sm text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
+
+                </form>
+            </x-slot:content>
+            <x-slot:footer>
+                <div
+                    class=" flex flex-col-reverse items-center justify-center  md:justify-end md:flex-row px-6 py-3 border-t border-gray-200">
+                    <x-primary-button type="button"
+                        class=" w-full bg-white hover:bg-gray-50 border border-gray-100 shadow-sm  md:w-auto transition-colors duration-200 ease-in-out">
+                        <p class=" text-black text-sm font-bold text-center"
+                            @click="$dispatch('close-modal' , 'project-modal'),  resetForm()">
+                            Batal</p>
+                    </x-primary-button>
+
+                    <x-primary-button :class="{ '!bg-gray-700': isLoading, '!bg-black hover:!bg-gray-800': !isLoading }"
+                        class=" mb-2 ml-0 md:mb-0 md:ml-2 w-full !bg-black hover:!bg-gray-800  md:w-auto transition-colors duration-200 ease-in-out"
+                        x-bind:disabled="isLoading" form="project-form">
+                        <template x-if="isLoading">
+                            <div class="flex items-center justify-center">
+                                <svg class="w-5 h-5 animate-spin border-4 rounded-full border-white/70 mr-3 border-t-transparent"
+                                    viewBox="0 0 24 24"></svg>
+                                {{ __('Tunggu sebentar...') }}
+                            </div>
+                        </template>
+
+                        <template x-if="!isLoading">
+                            <p class=" text-white text-sm font-bold text-center">Simpan Proyek</p>
+                        </template>
+                    </x-primary-button>
+                </div>
+            </x-slot:footer>
+        </x-modal>
     </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('project', () => ({
+                isEdit: false,
+                isLoading: false,
+
+                // Untuk menyimpan seluruh kategori proyek
+                categories: [],
+
+                // State utama form dikelompokkan di sini
+                form: {
+                    id: null,
+                    name: '',
+                    occupation: '',
+                    feedback: '',
+                    rating: 1,
+                    is_visible: 1
+                },
+
+                // Mengambil data testimonial dari server berdasarkan id
+                async fetchTestimonialById(id) {
+                    this.isLoading = true;
+                    this.isEdit = true;
+                    try {
+                        const response = await fetch(`/testimonial/${id}`);
+                        if (!response.ok) throw new Error('Gagal mengambil data');
+
+                        const res = await response.json();
+                        this.form = res.data; // Isi state form otomatis
+                        // console.log(this.form)
+                    } catch (error) {
+                        console.error(error.message);
+                        this.resetForm();
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+
+                // Reset form ke kondisi semula (Tambah Data)
+                resetForm() {
+                    this.isEdit = false;
+                    this.form = {
+                        id: null,
+                        name: '',
+                        occupation: '',
+                        feedback: '',
+                        rating: 1,
+                        is_visible: 1
+                    };
+                }
+            }));
+        });
+    </script>
 </x-app-layout>

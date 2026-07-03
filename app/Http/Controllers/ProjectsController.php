@@ -23,7 +23,6 @@ class ProjectsController extends Controller
         $pageName = "Projects";
         $projects = Project::with('category:id,name')->latest('created_at')->paginate(10);
 
-        // dd($projects);
         $categories = CategoryProject::all(['id', 'name']);
         return view('projects', compact('pageName', 'projects', 'categories'));
     }
@@ -33,6 +32,7 @@ class ProjectsController extends Controller
      */
     public function store(storeProjectRequest $request): RedirectResponse
     {
+        // dd($request->all());
         $payload = $request->validated();
 
         try {
