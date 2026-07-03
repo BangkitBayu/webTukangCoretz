@@ -109,7 +109,7 @@
                         @else
                             @foreach ($projects as $data)
                                 <tr id="{{ $data->id }}" class="  border-t border-gray-700 text-gray-400 text-sm">
-                                    <td class="p-4 align-middle">
+                                    <td class="p-4 align-middle whitespace-nowrap">
                                         <div class="flex items-center justify-start gap-3">
                                             @if ($data->hasMedia('thumbnail'))
                                                 <img src="{{ $data->getFirstMediaUrl('thumbnail', 'webp') }}"

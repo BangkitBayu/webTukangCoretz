@@ -32,9 +32,7 @@ class Project extends Model implements HasMedia
         'name',
         'slug',
         'description',
-        'start_date',
-        'end_date',
-        'is_show',
+        'is_visible',
         'category_project_id'
     ];
 
