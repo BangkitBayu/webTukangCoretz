@@ -55,6 +55,7 @@ class storeProjectRequest extends FormRequest
             'name.required' => 'Nama proyek harus diisi.',
             'name.regex' => 'Nama harus diawali huruf kapital dan dipisahkan dengan spasi.',
             'name.max' => 'Panjang nama proyek maksimal 255 karakter.',
+            'name.unique' => 'Nama proyek sudah digunakan, silahkan gunakan nama lain.',
 
             'thumbnail.required' => 'Thumbnail harus diisi.',
             'thumbnail.image' => 'Thumbnail harus berupa gambar.',

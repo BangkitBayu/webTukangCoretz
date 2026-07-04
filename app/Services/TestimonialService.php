@@ -37,7 +37,7 @@ class TestimonialService
     // Mengambil testimonial berdasarkan ID
     public function getTestimonialById(string $id): Testimonial
     {
-        $testimonial = Testimonial::find($id);
+        $testimonial = Testimonial::find($id, 'id');
 
         if (!$testimonial) {
             throw new Exception("Testimoni tidak ditemukan.", 404);
@@ -80,7 +80,8 @@ class TestimonialService
     }
 
     // Menghapus testimonial berdasarkan Id
-    public function delete(string $id): bool {
+    public function delete(string $id): bool
+    {
         $testimonial = $this->getTestimonialById($id);
 
         return $testimonial->delete();

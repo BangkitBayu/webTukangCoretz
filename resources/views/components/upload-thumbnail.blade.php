@@ -79,8 +79,7 @@
     <input x-ref="fileInput" type="file" name="thumbnail" accept="image/png,image/jpeg,image/webp" class="hidden"
         @change="onFileChange" />
 
-    <p x-show="$store.formProject.isEdit" class=" text-sm mt-2 text-yellow-400 font-semibold">Note: skipped upload
-        photo, if not changes.</p>
+    <p x-show="isEdit" class=" text-sm mt-2 text-yellow-400 font-semibold">Note: lewati unggahan foto jika tidak ada perubahan.</p>
 
     {{-- Error dari server (Blade) --}}
     @error('thumbnail')

@@ -56,26 +56,27 @@ class ProjectsController extends Controller
      */
     public function edit(string $id): JsonResponse
     {
-        $project = Project::findOrFail($id);
-        return response()->json($project, 200);
+        try {
+            $project = $this->projectService->getProjectById($id);
+            return response()->json(['message' => 'Proyek berhasil diambil', 'data' => $project]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode());
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(updateProjectRequest $request, Project $project): RedirectResponse
+    public function update(updateProjectRequest $request, string $id): RedirectResponse
     {
         $payload = $request->validated();
 
-        unset($payload['thumbnail']);
-
-        $project->update($payload);
-
-        if ($request->hasFile('thumbnail')) {
-            $project->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
+        try {
+            $this->projectService->update($payload, $id);
+            return back()->with('success', 'Proyek ' . $payload['name'] . ' berhasil diubah.');
+        } catch (Exception $e) {
+            return back()->with('error', 'Gagal mengubah proyek, silahkan cek data dan coba lagi!');
         }
-
-        return back()->with('success', 'Data changes has been successfully saved.');
     }
 
     /**

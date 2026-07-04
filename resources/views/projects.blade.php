@@ -157,7 +157,7 @@
 
                                             {{-- Edit testimonial button --}}
                                             <x-primary-button id="editBtn" type="button"
-                                                @click="$dispatch('open-modal' , 'testimonial-modal'), isEdit=true, fetchTestimonialById({{ $data->id }})"
+                                                @click="$dispatch('open-modal' , 'project-modal'), isEdit=true, fetchProjectById({{ $data->id }})"
                                                 class=" bg-transparent hover:!bg-slate-800 transition-colors duration-200 p-3 rounded-md">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 24 24">
@@ -260,7 +260,8 @@
                     <div class=" flex flex-col justify-start mb-4 w-full px-6">
                         <x-input-label :value="__('Kategori Proyek')"
                             class=" mb-1 after:content-['*'] after:text-red-600 "></x-input-label>
-                        <x-select-input id="category" name="category_project_id" required x-model="">
+                        <x-select-input id="category" name="category_project_id" required
+                            x-model="form.category_project_id">
                             <option>Pilih kategori proyek</option>
                             <template x-for="(value, index) in categories">
                                 <option :value="value.id" x-text="value.name"></option>
@@ -343,23 +344,22 @@
                 form: {
                     id: null,
                     name: '',
-                    occupation: '',
-                    feedback: '',
-                    rating: 1,
+                    description: '',
+                    category_project_id: 0,
                     is_visible: 1
                 },
 
                 // Mengambil data testimonial dari server berdasarkan id
-                async fetchTestimonialById(id) {
+                async fetchProjectById(id) {
                     this.isLoading = true;
                     this.isEdit = true;
                     try {
-                        const response = await fetch(`/testimonial/${id}`);
+                        const response = await fetch(`/projects/${id}`);
                         if (!response.ok) throw new Error('Gagal mengambil data');
 
                         const res = await response.json();
                         this.form = res.data; // Isi state form otomatis
-                        // console.log(this.form)
+                        console.log(res)
                     } catch (error) {
                         console.error(error.message);
                         this.resetForm();
@@ -374,9 +374,8 @@
                     this.form = {
                         id: null,
                         name: '',
-                        occupation: '',
-                        feedback: '',
-                        rating: 1,
+                        description: '',
+                        category_project_id: 0,
                         is_visible: 1
                     };
                 }
