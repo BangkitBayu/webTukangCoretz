@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\TestimonialLimitExceededException;
 use App\Http\Requests\testimonial\storeTestimonialRequest;
 use App\Http\Requests\testimonial\updateTestimonialRequest;
-use App\Http\Requests\testimonial\updateVisibilityRequest;
+use App\Http\Requests\updateVisibilityRequest;
 use App\Models\Testimonial;
 use App\Services\TestimonialService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class TestimonialController extends Controller
 {
@@ -63,6 +61,7 @@ class TestimonialController extends Controller
     {
         try {
             $testimonial = $this->testimonialService->getTestimonialById($id);
+            // dd($testimonial);
             return response()->json(['message' => 'Testimoni berhasil diambil', 'data' => $testimonial], 200);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], $e->getCode());

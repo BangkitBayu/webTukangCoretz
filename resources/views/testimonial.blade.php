@@ -6,7 +6,7 @@
         </h2>
 
     </x-slot>
-    <div class="py-12 relative" x-data="testimonialForm">
+    <div class="py-12 relative" x-data="testimonial">
         @if (session('success'))
             <x-alert :status="__('success')" :message="session('success')" x-transition></x-alert>
         @elseif (session('error'))
@@ -71,8 +71,8 @@
                     </x-stats.stats-card>
                 </x-slot:content>
             </x-stats.stats-overview>
-            <div class="  w-full overflow-x-auto border-t border-x border-gray-700 rounded-md">
-                <x-table class=" border-b border-gray-700 py-4">
+            <div class="  w-full overflow-x-auto border border-gray-700 rounded-md">
+                <x-table>
                     <x-slot name="tableHead">
 
                         <tr>
@@ -116,7 +116,7 @@
                         @else
                             @foreach ($testimonials as $data)
                                 <tr id="{{ $data->id }}"
-                                    class="text-sm text-white/80 text-center border-b border-gray-700">
+                                    class="text-sm text-white/80 text-center border-t border-gray-700">
                                     <td class="px-4 py-2 align-middle">
                                         <div class="flex items-center justify-start">
                                             <div
@@ -175,7 +175,7 @@
 
                                             {{-- Edit testimonial button --}}
                                             <x-primary-button id="editBtn" type="button"
-                                                @click="$dispatch('open-modal' , 'testimonial-modal'), isEdit=true, fetchTestimonialById({{ $data->id }})"
+                                                @click="$dispatch('open-modal' , 'testimonial-modal'), isEdit = true, fetchTestimonialById({{ $data->id }})"
                                                 class=" bg-transparent hover:!bg-slate-800 transition-colors duration-200 p-3 rounded-md">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 24 24">
@@ -412,7 +412,7 @@
 
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.data('testimonialForm', () => ({
+            Alpine.data('testimonial', () => ({
                 isEdit: false,
                 isLoading: false,
 

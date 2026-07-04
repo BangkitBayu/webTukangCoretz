@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\project\storeProjectRequest;
 use App\Http\Requests\project\updateProjectRequest;
+use App\Http\Requests\testimonial\updateVisibilityRequest as TestimonialUpdateVisibilityRequest;
 use App\Models\CategoryProject;
 use App\Models\Project;
 use App\Services\ProjectService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use App\Http\Requests\updateVisibilityRequest;
 
 class ProjectsController extends Controller
 {
@@ -21,10 +22,12 @@ class ProjectsController extends Controller
     public function index()
     {
         $pageName = "Projects";
-        $projects = Project::with('category:id,name')->latest('created_at')->paginate(10);
+        $projects = Project::with('category:id,name')->latest('created_at')->paginate(5);
 
+        $projects_count = Project::count();
+        $count_active_projects = Project::visible()->count();
         $categories = CategoryProject::all(['id', 'name']);
-        return view('projects', compact('pageName', 'projects', 'categories'));
+        return view('projects', compact('pageName', 'projects', 'categories', 'projects_count', 'count_active_projects'));
     }
 
     /**
@@ -87,6 +90,18 @@ class ProjectsController extends Controller
         try {
             $this->projectService->delete($id);
             return back()->with('success', 'Berhasil menghapus proyek.');
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function updateVisibility(updateVisibilityRequest $request,  string $id): RedirectResponse
+    {
+        $payload = $request->validated();
+
+        try {
+            $this->projectService->updateVisibility($payload['is_visible'], $id);
+            return back()->with('success', 'Berhasil memperbarui status proyek.');
         } catch (Exception $e) {
             return back()->with('error', $e->getMessage());
         }

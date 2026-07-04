@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\testimonial;
+namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
@@ -27,7 +27,6 @@ class updateVisibilityRequest extends FormRequest
             ]
         );
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -43,6 +42,6 @@ class updateVisibilityRequest extends FormRequest
     #[Override]
     protected function failedValidation(Validator $validator): RedirectResponse
     {
-        return back()->with('error', 'Gagal memperbarui status testimoni, silahkan coba lagi!');
+        return back()->with('error', 'Gagal memperbarui status aktif, silahkan coba lagi!');
     }
 }

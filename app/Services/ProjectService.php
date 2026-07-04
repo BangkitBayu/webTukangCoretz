@@ -60,4 +60,14 @@ class ProjectService
         // Menghapus proyek
         return $project->delete($id);
     }
+
+     public function updateVisibility(int $is_visible, string $id): bool
+    {
+
+        $project = $this->getProjectById($id);
+
+        $project->is_visible = $is_visible;
+
+        return $project->save();
+    }
 }

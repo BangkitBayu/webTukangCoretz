@@ -37,7 +37,7 @@ class TestimonialService
     // Mengambil testimonial berdasarkan ID
     public function getTestimonialById(string $id): Testimonial
     {
-        $testimonial = Testimonial::find($id, 'id');
+        $testimonial = Testimonial::select(['id', 'name', 'occupation', 'feedback', 'rating', 'is_visible'])->find($id, 'id');
 
         if (!$testimonial) {
             throw new Exception("Testimoni tidak ditemukan.", 404);

@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/projects/{id}', [ProjectsController::class, 'edit'])->name('projects.edit');
     Route::put('/projects/{id}', [ProjectsController::class, 'update'])->name('projects.update');
     Route::delete('/projects/{id}', [ProjectsController::class, 'destroy'])->name('projects.destroy');
+    Route::patch('/projects/{id}/visibility', [ProjectsController::class, 'updateVisibility'])->name('project.update-visibility');
 });
 
 require __DIR__ . '/auth.php';

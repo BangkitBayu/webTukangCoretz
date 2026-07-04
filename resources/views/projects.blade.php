@@ -45,7 +45,7 @@
                             </div>
                             <div class=" flex flex-col items-start justify-center ml-4">
                                 <p class=" text-sm text-neutral-300">Total Proyek</p>
-                                <span class=" text-xl text-white font-semibold">1</span>
+                                <span class=" text-xl text-white font-semibold">{{ $projects_count }}</span>
                             </div>
                         </x-slot:content>
                     </x-stats.stats-card>
@@ -66,7 +66,7 @@
                             </div>
                             <div class=" flex flex-col items-start justify-center ml-4">
                                 <p class=" text-sm text-neutral-300">Ditampilkan</p>
-                                <span class=" text-xl text-white font-semibold">1</span>
+                                <span class=" text-xl text-white font-semibold">{{ $count_active_projects }}</span>
                             </div>
                         </x-slot:content>
                     </x-stats.stats-card>
@@ -134,7 +134,7 @@
 
                                     <td class="p-2 align-middle">
                                         <form x-data x-ref="formChangeStatus"
-                                            action="{{ route('testimonial.update-visibility', ['id' => $data->id]) }}"
+                                            action="{{ route('project.update-visibility', ['id' => $data->id]) }}"
                                             method="POST" class="flex flex-wrap items-center justify-start">
                                             @csrf
 

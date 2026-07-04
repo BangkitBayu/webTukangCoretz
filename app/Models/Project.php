@@ -40,4 +40,9 @@ class Project extends Model implements HasMedia
     {
         return $this->belongsTo(CategoryProject::class, 'category_project_id', 'id');
     }
+
+    public function scopeVisible($query)
+    {
+        return $query->where('is_visible', 1);
+    }
 }
