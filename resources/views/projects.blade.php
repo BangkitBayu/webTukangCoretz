@@ -169,9 +169,9 @@
                                             </x-primary-button>
 
 
-                                            {{-- Delete testimonial form --}}
+                                            {{-- Delete project  --}}
                                             <x-primary-button id="deleteBtn" type="button"
-                                                @click="$dispatch('open-modal' , 'confirm-delete'), fetchTestimonialById({{ $data->id }})"
+                                                @click="$dispatch('open-modal' , 'confirm-delete'), fetchProjectById({{ $data->id }})"
                                                 class=" bg-transparent hover:!bg-slate-800 transition-colors duration-200 p-3 rounded-md lg:ml-3 lg:mt-0">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                     viewBox="0 0 512 512">
@@ -187,6 +187,65 @@
                                                 </svg>
 
                                             </x-primary-button>
+
+                                            {{-- Confirm delete modal --}}
+                                            <x-modal name="confirm-delete" class=" bg-white">
+                                                <x-slot:header>
+                                                    <div
+                                                        class=" align-middle flex items-center justify-center md:justify-start px-6 py-3 border-b border-gray-200 ">
+                                                        <div class=" bg-red-600 text-red-200 rounded-full mr-3 p-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                                height="18" viewBox="0 0 24 24">
+                                                                <path fill="currentColor"
+                                                                    d="M19 4h-3.5l-1-1h-5l-1 1H5v2h14M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6z" />
+                                                            </svg>
+                                                        </div>
+                                                        <h3 class=" text-lg text-black font-semibold text-center">
+                                                            Konfirmasi Hapus</h3>
+                                                    </div>
+                                                </x-slot:header>
+                                                <x-slot:content>
+                                                    <form :action='`/projects/${form.id}`' method="POST"
+                                                        class="p-3" @submit="isLoading = true"
+                                                        id="delete-project">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <p class=" text-center text-sm text-gray-800">Apakah kamu yakin
+                                                            ingin menghapus proyek
+                                                            <span class=" font-semibold" x-text="form.name"></span> ?
+                                                        </p>
+                                                    </form>
+                                                </x-slot:content>
+                                                <x-slot:footer>
+                                                    <div
+                                                        class=" flex flex-col-reverse items-center justify-center  md:justify-end md:flex-row px-6 py-3 border-t border-gray-200">
+                                                        <x-primary-button type="button"
+                                                            class=" w-full bg-white hover:bg-gray-50 border border-gray-100 shadow-sm  md:w-auto transition-colors duration-200 ease-in-out">
+                                                            <p class=" text-black text-sm font-bold text-center"
+                                                                @click="$dispatch('close-modal' , 'confirm-delete'), resetForm()">
+                                                                Batal</p>
+                                                        </x-primary-button>
+
+                                                        <x-primary-button :class="{ '!bg-gray-700': isLoading, '!bg-black hover:!bg-gray-800': !isLoading }"
+                                                            class=" mb-2 ml-0 md:mb-0 md:ml-2 w-full !bg-black hover:!bg-gray-800  md:w-auto transition-colors duration-200 ease-in-out"
+                                                            x-bind:disabled="isLoading" form="delete-project"
+                                                            type="submit">
+                                                            <template x-if="isLoading">
+                                                                <div class="flex items-center justify-center">
+                                                                    <svg class="w-5 h-5 animate-spin border-4 rounded-full border-white/70 mr-3 border-t-transparent"
+                                                                        viewBox="0 0 24 24"></svg>
+                                                                    {{ __('Tunggu sebentar...') }}
+                                                                </div>
+                                                            </template>
+
+                                                            <template x-if="!isLoading">
+                                                                <p class=" text-white text-sm font-bold text-center">
+                                                                    Hapus Proyek</p>
+                                                            </template>
+                                                        </x-primary-button>
+                                                    </div>
+                                                </x-slot:footer>
+                                            </x-modal>
 
                                         </div>
                                     </td>
@@ -359,7 +418,6 @@
 
                         const res = await response.json();
                         this.form = res.data; // Isi state form otomatis
-                        console.log(res)
                     } catch (error) {
                         console.error(error.message);
                         this.resetForm();

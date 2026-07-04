@@ -82,10 +82,13 @@ class ProjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        Project::destroy($id);
-
-        return back()->with('success', 'Data deleted succesfully.');
+        try {
+            $this->projectService->delete($id);
+            return back()->with('success', 'Berhasil menghapus proyek.');
+        } catch (Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

@@ -8,6 +8,7 @@ use Exception;
 
 class ProjectService
 {
+    // Menyimpan proyek baru ke database
     public function store(array $data): void
     {
         // Melepas thumbnail dari data sebelum menambah proyek baru
@@ -20,6 +21,7 @@ class ProjectService
         $project->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
     }
 
+    // Mengambil proyek berdasarkan ID
     public function getProjectById(string $id): Project
     {
         $project = Project::select(['id', 'name', 'description', 'category_project_id', 'is_visible'])->find($id, 'id');
@@ -31,6 +33,7 @@ class ProjectService
         return $project;
     }
 
+    // Mengupdate proyek yang sudah ada
     public function update(array $data, string $id): void
     {
         // Melepas thumbnail dari data sebelum mengupdate proyek
@@ -46,5 +49,15 @@ class ProjectService
         if (request()->hasFile('thumbnail')) {
             $project->addMediaFromRequest('thumbnail')->toMediaCollection('thumbnail');
         }
+    }
+
+    // Menghapus proyek berdasarkan Id
+    public function delete(string $id): bool
+    {
+        // Mengambil proyek berdasarkan ID
+        $project = $this->getProjectById($id);
+
+        // Menghapus proyek
+        return $project->delete($id);
     }
 }
